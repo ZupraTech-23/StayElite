@@ -1,0 +1,11 @@
+{
+  "name": "stayelite",
+  "version": "1.0.0",
+  "description": "A Hotel Management Software",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zupra Technologies",
+  "license": "ISC"
+}
