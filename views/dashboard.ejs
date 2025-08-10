@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hotel Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/public/style/dashboard.css">
+  <link rel="stylesheet" href="/style/dashboard.css">
 </head>
 <body>
   <div class="container">
@@ -15,7 +15,7 @@
         <div class="sub">Overview of rooms, Staff & today's activity ...
           <p>Powered By @Zupra Technologies</p>
         </div>
-        <div class="role">user.role</div>
+        <div class="role"><%= user.role %></div>
       </div>
       <div class="actions">
         <button id="openCheckin" class="btn">Check In</button>
