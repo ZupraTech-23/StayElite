@@ -10,6 +10,30 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+const session=require('express-session');
+app.use(session({
+  secret:"Stu@7890",
+  resave:false,
+  saveUninitialized:false
+  
+}));
+//middlewares
+function isAuthenticated(req, res, next) {
+  if (req.session.user) {
+    return next();
+  }
+  res.redirect('/login');
+}
+function authorize(allowedRoles) {
+  return (req, res, next) => {
+    if (!req.session.user || !allowedRoles.includes(req.session.user.role)) {
+      return res.status(403).send('Access Denied');
+    }
+    next();
+  };
+}
+
+
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -24,18 +48,40 @@ app.get('/login',(req,res)=>{
 })
 app.post('/login',(req,res)=>{
   let {username,password,role}=req.body;
-  let q="select * from user where username = ? and password= ? and role= ?";
-  connection.query(q,[username,password,role],(error,result)=>{
+  let q="select * from user where username = ? and password= ? ";
+  connection.query(q,[username,password],(error,result)=>{
     if(error){
       res.send("db error")
     }
     else if(result.length===0){
-      res.send("invalid username or password");
+      return res.send("invalid username or password or role");
     }
-    if(result.length>0){
+  
       let user=result[0];
-      res.render('dashboard.ejs',{user});
-    }
+      req.session.user={
+        username:user.username,
+        role:user.role
+      };
+      res.redirect('/dashboard')
+      
     
+    
+  })
+})
+
+app.get('/dashboard',isAuthenticated,(req,res)=>{
+ 
+  res.render('dashboard.ejs');
+})
+
+app.post('/logout',(req,res)=>{
+  req.session.destroy(err=>{
+    if(err){
+      return res.status(500).send("Try again");
+
+    }
+    res.clearCookie('connect.sid');
+    res.redirect('/login');
+
   })
 })

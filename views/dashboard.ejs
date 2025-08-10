@@ -18,14 +18,27 @@
         <div class="role"><%= user.role %></div>
       </div>
       <div class="actions">
-        <button id="openCheckin" class="btn">Check In</button>
+        <% if (user.role==="Receptionist" || user.role==="Manager" || user.role==="Admin")   { %>
+          <button id="openCheckin" class="btn">Check In</button>
         <button id="openCheckout" class="btn">Check Out</button>
-        <button class="btn">Staff Attendance</button>
         <button class="btn">Guests Info</button>
         <button class="btn">Wifi info's</button>
         
-        <button class="btn">Generate Invoice Bill</button>
-        <button class="btn">More</button>
+        <%  } %>
+
+        <% if (user.role==="Manager" || user.role==="Admin") { %>
+          <button class="btn">Generate Invoice Bill</button>
+        <button class="btn">Staff Attendance</button>
+
+        
+          
+       <% } %>
+       <form action="/logout" method="post">
+          <button type="submit" class="btn">Log Out</button>
+        </form>
+        
+        
+        
       </div>
     </header>
 

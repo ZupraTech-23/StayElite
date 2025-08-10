@@ -1,6 +1,6 @@
-/* ====== Hotel Dashboard Styles ====== */
+/* ====== Hotel Dashboard Styles - Modern SaaS Look ====== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 * {
   margin: 0;
@@ -10,20 +10,23 @@
 }
 
 body {
-  background-color: #f5f7fb;
-  color: #333;
+  background-color: #f8fafc;
+  color: #1e293b;
+  line-height: 1.5;
 }
 
+/* ====== LAYOUT CONTAINER ====== */
 .container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: auto;
-  padding: 20px;
+  padding: 24px;
 }
 
-.role{
-  margin-top: 20px;
-  font-weight: 800;
-  font-size: 25px;
+.role {
+  margin-top: 24px;
+  font-weight: 700;
+  font-size: 26px;
+  color: #0f172a;
 }
 
 /* ====== HEADER ====== */
@@ -31,46 +34,52 @@ header {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+  align-items: flex-start;
+  margin-bottom: 32px;
 }
 
 header h1 {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
-  color: #2c3e50;
+  color: #0f172a;
 }
 
 header .sub {
   font-size: 15px;
-  color: #666;
+  color: #64748b;
   margin-top: 4px;
 }
 
-header .sub p{
-    font-size: 11px;
-    font-weight: 900;
+header .sub p {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
+/* ====== BUTTONS ====== */
 .btn {
-  background: #3498db;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: #fff;
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 10px 16px;
+  border-radius: 8px;
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.25s ease;
+  box-shadow: 0px 2px 6px rgba(37, 99, 235, 0.25);
 }
 
 .btn:hover {
-  background: #2980b9;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 10px rgba(37, 99, 235, 0.35);
 }
 
 /* ====== GRID CARDS ====== */
@@ -83,28 +92,37 @@ header .sub p{
 
 .card {
   background: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
 .card h3 {
-  font-size: 18px;
-  color: #34495e;
-  margin-bottom: 10px;
+  font-size: 16px;
+  color: #475569;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .card .big {
-  font-size: 36px;
-  font-weight: bold;
-  color: #2e8dcc;
+  font-size: 34px;
+  font-weight: 700;
+  color: #2563eb;
 }
 
 .card .small {
   font-size: 13px;
-  color: #888;
+  color: #94a3b8;
 }
 
+/* ====== CHECK-IN SECTION ====== */
 .checkins {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -113,17 +131,25 @@ header .sub p{
 
 .check {
   background: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  transition: all 0.25s ease;
+}
+
+.check:hover {
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.06);
 }
 
 .check h3 {
   font-size: 18px;
   margin-bottom: 15px;
-  color: #34495e;
+  color: #1e293b;
+  font-weight: 600;
 }
 
+/* ====== TABLE ====== */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -131,22 +157,31 @@ table {
 }
 
 thead {
-  background: #3498db;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
 }
 
 thead th {
-  padding: 10px;
+  padding: 12px;
   text-align: left;
+  font-weight: 600;
+}
+
+tbody tr {
+  transition: background 0.2s ease;
 }
 
 tbody tr:nth-child(even) {
-  background: #f9f9f9;
+  background: #f9fafb;
+}
+
+tbody tr:hover {
+  background: #f1f5f9;
 }
 
 tbody td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 /* ====== RESPONSIVE ====== */
@@ -154,15 +189,10 @@ tbody td {
   header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
   }
   
   .actions {
-    margin-top: 10px;
+    margin-top: 8px;
   }
 }
-
-.btn:hover{
-    background-color: black;
-}
-    
-
