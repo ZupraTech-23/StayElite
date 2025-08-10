@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In / Sign Up</title>
-    <link rel="stylesheet" href="/public/style/login.css">
+    <link rel="stylesheet" href="/style/login.css">
 </head>
 <body>
     <!-- Navbar -->
     <header>
         <nav>
             <div class="logo">
-                <img src="/public/assets/logo.png" alt="">
+                <img src="/assets/logo.png" alt="">
             </div>
             <div class="lists">
                 <ul>
@@ -24,11 +24,11 @@
     <!-- Login Form -->
     <div class="container">
         <h1>Login</h1>
-        <form action="">
-            <input type="text" placeholder="Username">
-            <input type="password" placeholder="Password">
-            <label for="Role" class="role">Role</label>
-            <select name="Role" id="Role">
+        <form action="/login" method="post">
+            <input type="text" placeholder="Username" name="username">
+            <input type="password" placeholder="Password" name="password">
+            <label for="role" class="role">Role</label>
+            <select name="role">
                 <option value="Manager">Manager</option>
                 <option value="Receptionist">Receptionist</option>
                 <option value="Admin">Admin</option>

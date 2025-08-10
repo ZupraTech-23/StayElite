@@ -18,12 +18,14 @@ nav {
   justify-content: space-around;
   align-items: center;
   background: linear-gradient(90deg, #26ccff 0%, #515353 100%);
+  width: 100vw;
 }
 
 ul li {
   list-style: none;
   font-size: 40px;
   font-weight: 600;
+  color: white;
 }
 
 /* ===== Wasi's Login Styles ===== */
