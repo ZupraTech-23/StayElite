@@ -93,3 +93,7 @@ app.get('/checkin',(req,res)=>{
 app.get('/checkout',(req,res)=>{
   res.render('checkout.ejs');
 })
+
+app.get('/getwifi',(req,res)=>{
+  res.render('wifi.ejs');
+})

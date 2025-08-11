@@ -1,0 +1,79 @@
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Page background */
+body {
+  background: linear-gradient(135deg, #6dd5fa, #2980b9);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container styling */
+form {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+/* Heading */
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+/* Input fields */
+input[type="text"] {
+  padding: 11px;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+}
+
+
+/* Submit button */
+input[type="submit"] {
+  background: #000000;
+  color: rgb(255, 255, 255);
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+#password{
+   
+     
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+input[type="submit"]:hover {
+  background: #00ff62;
+  color: black;
+  font-weight: 600;
+  border: 2px solid;
+}
