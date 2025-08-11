@@ -71,7 +71,7 @@ app.post('/login',(req,res)=>{
 
 app.get('/dashboard',isAuthenticated,(req,res)=>{
  
-  res.render('dashboard.ejs');
+  res.render('dashboard.ejs',{user:req.session.user});
 })
 
 app.post('/logout',(req,res)=>{
