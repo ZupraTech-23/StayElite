@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Room</title>
+  <link rel="stylesheet" href="/style/addrooms.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Add New Room</h2>
+    <form action="/rooms" method="POST" class="room-form">
+      <label for="room_number">Room Number</label>
+      <input type="text" id="room_number" name="room_number" required />
+
+      <label for="room_type">Room Type</label>
+      <select id="room_type" name="room_type" required>
+        <option value="">Select Type</option>
+        <option value="Single">Single</option>
+        <option value="Double">Double</option>
+        <option value="Suite">Suite</option>
+      </select>
+
+      
+
+      <label for="status">Status</label>
+      <select id="status" name="status" required>
+        <option value="">Select Status</option>
+        <option value="available">Available</option>
+        <option value="occupied">Occupied</option>
+        
+        
+      </select>
+
+      <button type="submit">Add Room</button>
+    </form>
+  </div>
+</body>
+</html>
