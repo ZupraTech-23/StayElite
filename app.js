@@ -11,6 +11,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const session=require('express-session');
+const { error } = require('console');
+const { stat } = require('fs');
 app.use(session({
   secret:"Stu@7890",
   resave:false,
@@ -70,9 +72,35 @@ app.post('/login',(req,res)=>{
 })
 
 app.get('/dashboard',isAuthenticated,(req,res)=>{
+  let ava="available";
+  let occ="occupied";
+
+  let q="select count(room_number) AS available from rooms where is_available=?";
+  let q2="select count(room_number) AS occupied from rooms where is_available=?";
+
+  connection.query(q,[ava],(error,result)=>{
+    if(error){
+      console.error("db error",error);
+
+    }
+    let available=result[0].available;
+    console.log(available)
+
+    connection.query(q2,[occ],(error2,result2)=>{
+      if(error2){
+        console.error('db error' ,error2);
+      }
+      let occupied=result2[0].occupied;
+    res.render('dashboard.ejs',{user:req.session.user,available,occupied});
+
+    })
+
+  })
+   
  
-  res.render('dashboard.ejs',{user:req.session.user});
+  
 })
+
 
 app.post('/logout',(req,res)=>{
   req.session.destroy(err=>{
@@ -84,4 +112,28 @@ app.post('/logout',(req,res)=>{
     res.redirect('/login');
 
   })
+})
+
+app.get('/rooms',(req,res)=>{
+  res.render("addrooms.ejs");
+})
+
+app.post('/rooms',(req,res)=>{
+  let{room_number,room_type,status}=req.body;
+  
+  let q="insert into rooms (room_number,room_type,is_available) values (?,?,?)";
+  connection.query(q,[room_number,room_type,status],(error,result)=>{
+    
+      if (error) {
+  console.error(error); // log exact MySQL error
+  return res.status(500).send("Database error: " + error.message);
+
+
+      
+
+    }
+    
+    res.send("Added succesfully");
+  })
+  
 })
