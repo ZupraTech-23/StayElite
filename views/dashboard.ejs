@@ -19,8 +19,8 @@
       </div>
       <div class="actions">
         <% if (user.role==="Receptionist" || user.role==="Manager" || user.role==="Admin")   { %>
-          <button id="openCheckin" class="btn">Check In</button>
-        <button id="openCheckout" class="btn">Check Out</button>
+          <button id="openCheckin" class="btn"><a href="http://localhost:8080/checkin">Check in</a></button>
+        <button id="openCheckout" class="btn"><a href="http://localhost:8080/checkout">Check out</a></button>
         <button class="btn">Guests Info</button>
         <button class="btn">Wifi info's</button>
         

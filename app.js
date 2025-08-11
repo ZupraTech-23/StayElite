@@ -85,3 +85,11 @@ app.post('/logout',(req,res)=>{
 
   })
 })
+
+app.get('/checkin',(req,res)=>{
+  res.render('checkin.ejs');
+})
+
+app.get('/checkout',(req,res)=>{
+  res.render('checkout.ejs');
+})

@@ -1,0 +1,140 @@
+:root {
+  --bg-start: #0e7183;
+  --bg-end: #ffffff;
+  --card: #ffffff;
+  --accent: #000000;
+  --muted: #000000;
+}
+
+body {
+  font-family: Inter, system-ui, Segoe UI, Arial;
+  background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+  color: #8da3d8;
+  padding: 28px;
+}
+
+.container {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(12, 17, 43, 0.12);
+  padding: 22px;
+  backdrop-filter: blur(6px);
+}
+
+h1 {
+  font-size: 22px;
+  margin: 0 0 16px;
+  color: var(--accent);
+}
+
+form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #65807e;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: #f9fafb;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(86, 130, 224, 0.15);
+  outline: none;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+  grid-column: 1 / -1;
+}
+
+button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+}
+
+.note {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.summary {
+  background: #f8fafc;
+  border: 1px dashed #e2e8f0;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+@media (max-width: 720px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.title{
+    background-color: black;
+}
+
+.card h1{
+    text-align: center;
+    font-size: large;
+}
