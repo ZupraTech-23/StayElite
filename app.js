@@ -114,26 +114,33 @@ app.post('/logout',(req,res)=>{
   })
 })
 
-app.get('/rooms',(req,res)=>{
+// From checkin-checkout branch
+app.get('/checkin', (req, res) => {
+  res.render('checkin.ejs');
+});
+
+app.get('/checkout', (req, res) => {
+  res.render('checkout.ejs');
+});
+
+app.get('/getwifi', (req, res) => {
+  res.render('wifi.ejs');
+});
+
+// From main branch
+app.get('/rooms', (req, res) => {
   res.render("addrooms.ejs");
-})
+});
 
-app.post('/rooms',(req,res)=>{
-  let{room_number,room_type,status}=req.body;
-  
-  let q="insert into rooms (room_number,room_type,is_available) values (?,?,?)";
-  connection.query(q,[room_number,room_type,status],(error,result)=>{
-    
-      if (error) {
-  console.error(error); // log exact MySQL error
-  return res.status(500).send("Database error: " + error.message);
+app.post('/rooms', (req, res) => {
+  let { room_number, room_type, status } = req.body;
 
-
-      
-
+  let q = "INSERT INTO rooms (room_number, room_type, is_available) VALUES (?,?,?)";
+  connection.query(q, [room_number, room_type, status], (error, result) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).send("Database error: " + error.message);
     }
-    
-    res.send("Added succesfully");
-  })
-  
-})
+    res.send("Added successfully");
+  });
+});

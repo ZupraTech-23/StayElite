@@ -21,6 +21,10 @@ body {
   margin: auto;
   padding: 24px;
 }
+a{
+  text-decoration: none;
+  color: white;
+}
 
 .role {
   margin-top: 24px;
