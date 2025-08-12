@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Attendance</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(120deg, #8fa9c0, #cecece);
+        margin: 0;
+        padding: 20px;
+        color: #000000;
+    }
+    h1 {
+        text-align: center;
+        color: rgb(0, 0, 0);
+    }
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    input[type="date"], button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    button {
+        cursor: pointer;
+        background: #ffffff;
+        color: #333;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #030303;
+        color: #fff;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #585050;
+    }
+    th {
+        
+        color: rgb(235, 227, 227);
+        background-color: black;
+    }
+    .status {
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .status.present {
+        color: rgb(11, 240, 11);
+    }
+    .status.absent {
+        color: rgb(238, 6, 6);
+    }
+    .status.leave {
+        color: rgb(0, 0, 0);
+    }
+    .action-btn {
+        padding: 6px 10px;
+        margin: 0 2px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+    .present { background-color: #2a8640; 
+        color: black;
+}
+    .present:hover { background-color: #115c09;
+     }
+    .absent { background-color: #cc8187; }
+    .absent:hover { background-color: #e6080f; }
+    .leave { background-color: #e2b933; }
+    .leave:hover { background-color: #f1b305;
+    color: #000000; }
+</style>
+</head>
+<body>
+
+<h1>Employee Attendance</h1>
+
+
+<div class="controls">
+    <input type="date" id="attendance-date">
+    <button id="load-btn">Load</button>
+    <button id="reset-btn">Reset</button>
+    <button id="save-btn">Save</button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Present</th>
+            <th>Absent</th>
+            <th>On Leave</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>John Doe</td>
+            <td><button class="action-btn present">Present</button></td>
+            <td><button class="action-btn absent">Absent</button></td>
+            <td><button class="action-btn leave">On Leave</button></td>
+            <td class="status"></td>
+        </tr>
+        <tr>
+            <td>Jane Smith</td>
+            <td><button class="action-btn present">Present</button></td>
+            <td><button class="action-btn absent">Absent</button></td>
+            <td><button class="action-btn leave">On Leave</button></td>
+            <td class="status"></td>
+        </tr>
+        <tr>
+            <td>Mike Johnson</td>
+            <td><button class="action-btn present">Present</button></td>
+            <td><button class="action-btn absent">Absent</button></td>
+            <td><button class="action-btn leave">On Leave</button></td>
+            <td class="status"></td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("tbody tr").forEach(row => {
+        const statusCell = row.querySelector(".status");
+
+        row.querySelector(".present").addEventListener("click", () => {
+            statusCell.innerHTML = "✅";
+            statusCell.className = "status present";
+        });
+
+        row.querySelector(".absent").addEventListener("click", () => {
+            statusCell.innerHTML = "❌";
+            statusCell.className = "status absent";
+        });
+
+        row.querySelector(".leave").addEventListener("click", () => {
+            statusCell.textContent = "On Leave";
+            statusCell.className = "status leave";
+        });
+    });
+
+    document.getElementById("reset-btn").addEventListener("click", () => {
+        document.querySelectorAll(".status").forEach(cell => {
+            cell.textContent = "";
+            cell.className = "status";
+        });
+    });
+
+    document.getElementById("load-btn").addEventListener("click", () => {
+        alert("Load previous attendance from DB here");
+    });
+
+    document.getElementById("save-btn").addEventListener("click", () => {
+        const date = document.getElementById("attendance-date").value;
+        const data = [];
+        document.querySelectorAll("tbody tr").forEach(row => {
+            const name = row.cells[0].textContent;
+            const status = row.querySelector(".status").textContent;
+            data.push({ name, status });
+        });
+        console.log("Saving for date:", date, data);
+        alert("Attendance saved (see console for details)");
+    });
+});
+
+</script>
+
+
+</body>
+</html>
