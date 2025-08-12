@@ -5,65 +5,76 @@
 <link rel="stylesheet" href="/style/checkout.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hotel Check-Out Form</title>
-
 </head>
 <body>
 
 <div class="container">
   <div class="card">
     <h1 style="text-align: center;">Hotel Check-Out Form</h1>
-    <form>
+    <form method="POST" action="/checkout">
       <div>
         <label>Client Name</label>
-        <input type="text" placeholder="Enter client's full name">
+        <input type="text" name="clientName" placeholder="Enter client's full name" required>
       </div>
+
       <div>
-        <label>Mention Rooms Number's</label>
-        <input type="text" placeholder="Mention all Room Number's : eg. 101,102">
-        
+        <label>Mention Room Number(s)</label>
+        <input type="text" name="roomNumbers" placeholder="e.g. 101,102" required>
       </div>
-      <div><label>Total Rooms</label>
-        <input type="text" placeholder="Total Rooms."></div>
+
+      <div>
+        <label>Total Rooms</label>
+        <input type="number" name="totalRooms" placeholder="Total Rooms" required>
+      </div>
+
       <div>
         <label>Check-In Date</label>
-        <input type="date">
+        <input type="date" name="checkinDate" required>
       </div>
+
       <div>
         <label>Check-Out Date</label>
-        <input type="date">
+        <input type="date" name="checkoutDate" required>
       </div>
+
       <div>
         <label>Total Number of Guests</label>
-        <input type="number" placeholder="e.g. 2">
+        <input type="number" name="totalGuests" placeholder="e.g. 2" required>
       </div>
+
       <div>
-        <label>Number of Etc Beds Used</label>
-        <input type="number" placeholder="e.g. 2">
+        <label>Number of Extra Beds Used</label>
+        <input type="number" name="extraBeds" placeholder="e.g. 2">
       </div>
+
       <div>
         <label>Extra Services Used</label>
-        <textarea placeholder="List any extra services (food, laundry, etc.)"></textarea>
+        <textarea name="extraServices" placeholder="List any extra services (food, laundry, etc.)"></textarea>
       </div>
+
       <div>
         <label>Pending Payments</label>
-        <input type="text" placeholder="Enter amount or 'None'">
+        <input type="text" name="pendingPayments" placeholder="Enter amount or 'None'">
       </div>
+
       <div>
         <label>Payment Mode</label>
-        <select>
-          <option>Cash</option>
-          <option>Credit/Debit Card</option>
-          <option>UPI</option>
-          <option>Bank Transfer</option>
-          <option>By agent </option>
+        <select name="paymentMode" required>
+          <option value="Cash">Cash</option>
+          <option value="Credit/Debit Card">Credit/Debit Card</option>
+          <option value="UPI">UPI</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+          <option value="By Agent">By Agent</option>
         </select>
       </div>
+
       <div class="full">
         <label>Remarks / Feedback</label>
-        <textarea placeholder="Write remarks or feedback"></textarea>
+        <textarea name="remarks" placeholder="Write remarks or feedback"></textarea>
       </div>
+
       <div class="actions">
-        <button type="button" class="btn-ghost">Cancel</button>
+        <button type="button" class="btn-ghost" onclick="window.location.href='/dashboard'">Cancel</button>
         <button type="submit" class="btn-primary">Submit Check-Out</button>
       </div>
     </form>
