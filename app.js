@@ -13,6 +13,7 @@ app.use(express.json());
 const session=require('express-session');
 const { error } = require('console');
 const { stat } = require('fs');
+const today = new Date().toISOString().split('T')[0]; 
 app.use(session({
   secret:"Stu@7890",
   resave:false,
@@ -77,6 +78,26 @@ app.get('/dashboard',isAuthenticated,(req,res)=>{
 
   let q="select count(room_number) AS available from rooms where is_available=?";
   let q2="select count(room_number) AS occupied from rooms where is_available=?";
+  let q3=`
+  SELECT c.client_name, COUNT(cr.room_id) AS rooms, GROUP_CONCAT(r.room_number SEPARATOR ', ') AS room_numbers
+  FROM checkins c
+  JOIN checkin_rooms cr ON c.checkin_id = cr.checkin_id
+  JOIN rooms r ON cr.room_id = r.room_id
+  WHERE c.checkin_date = ?
+  GROUP BY c.checkin_id
+`;
+let q4=`SELECT 
+    c.client_name, 
+    COUNT(cr.room_id) AS rooms,
+    GROUP_CONCAT(r.room_number ORDER BY r.room_number) AS room_numbers
+FROM checkins c
+JOIN checkin_rooms cr ON c.checkin_id = cr.checkin_id
+JOIN rooms r ON cr.room_id = r.room_id
+WHERE DATE(c.checkout_date) = CURDATE()
+GROUP BY c.checkin_id
+`;
+    
+
 
   connection.query(q,[ava],(error,result)=>{
     if(error){
@@ -91,8 +112,30 @@ app.get('/dashboard',isAuthenticated,(req,res)=>{
         console.error('db error' ,error2);
       }
       let occupied=result2[0].occupied;
-    res.render('dashboard.ejs',{user:req.session.user,available,occupied});
 
+      connection.query(q3,[today],(error3,result3)=>{
+        if(error3){
+          console.error(error3);
+        }
+        let result=result3;
+
+        connection.query(q4,[today],(error4,result4)=>{
+          if(error4){
+            console.error(error4);
+          }
+          console.log(result4);
+          res.render('dashboard.ejs',{user:req.session.user,available,occupied,result,result4});
+
+
+        })
+
+        
+        
+        
+
+
+      })
+    
     })
 
   })
@@ -116,7 +159,13 @@ app.post('/logout',(req,res)=>{
 
 // From checkin-checkout branch
 app.get('/checkin', (req, res) => {
-  res.render('checkin.ejs');
+  let q="select * from rooms where is_available = 'available' ";
+  connection.query(q,(error,result)=>{
+    
+    res.render('checkin.ejs',{result});
+
+  })
+  
 });
 
 app.get('/checkout', (req, res) => {
@@ -128,11 +177,11 @@ app.get('/getwifi', (req, res) => {
 });
 
 // From main branch
-app.get('/rooms', (req, res) => {
+app.get('/rooms',isAuthenticated, (req, res) => {
   res.render("addrooms.ejs");
 });
 
-app.post('/rooms', (req, res) => {
+app.post('/rooms', isAuthenticated, (req, res) => {
   let { room_number, room_type, status } = req.body;
 
   let q = "INSERT INTO rooms (room_number, room_type, is_available) VALUES (?,?,?)";
@@ -143,4 +192,51 @@ app.post('/rooms', (req, res) => {
     }
     res.send("Added successfully");
   });
+});
+
+
+//checkin logic
+app.post("/checkin", isAuthenticated, (req, res) => {
+    const {
+        clientName, roomsAllotted, paxes, roomNo, mealPlan, checkinDate,
+        checkoutDate, clientAddress, idProofType, idProofNo, otherIdText,
+        beds, bookingFrom, bookedBy, notes
+    } = req.body;
+
+    // 1. Insert guest info into checkins table
+    const insertCheckin = `
+        INSERT INTO checkins
+        (client_name, rooms_allotted, paxes, meal_plan, checkin_date, checkout_date,
+         client_address, id_proof_type, id_proof_no, other_id_text, beds, booking_from, booked_by, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    connection.query(insertCheckin, [
+        clientName, roomsAllotted, paxes, mealPlan, checkinDate, checkoutDate,
+        clientAddress, idProofType, idProofNo, otherIdText, beds, bookingFrom, bookedBy, notes
+    ], (err, result) => {
+        if (err) throw err;
+        const checkinId = result.insertId; // Get the ID of the new check-in
+
+        // 2. Assign each room to the check-in
+      const roomNumbers = Array.isArray(roomNo) ? roomNo : [roomNo];
+
+        roomNumbers.forEach(num => {
+            // Get the room ID for the room number
+            connection.query(`SELECT room_id FROM rooms WHERE room_number = ?`, [num], (err, rows) => {
+                if (err) throw err;
+                if (rows.length > 0) {
+                    const roomId = rows[0].room_id;
+                    
+                    // Insert into checkin_rooms
+                    connection.query(`INSERT INTO checkin_rooms (checkin_id, room_id) VALUES (?, ?)`, [checkinId, roomId]);
+
+                    // Mark room as occupied
+                    connection.query(`UPDATE rooms SET is_available = 'occupied' WHERE room_id = ?`, [roomId]);
+                }
+            });
+        });
+
+        res.redirect("/dashboard");
+    });
 });

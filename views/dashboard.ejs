@@ -69,7 +69,29 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Check-in data rows go here -->
+             <% if (result.length === 0) { %>
+      <tr><td colspan="3">No check-ins today</td></tr>
+    <% } else { %>
+      <%   for(re of result)  { %>
+
+        <tr>
+          <td>
+            <%= re.client_name %>
+          </td>
+          <td>
+            <%= re.rooms %>
+          </td>
+          <td>
+            <%= re.room_numbers %>
+          </td>
+        </tr>
+
+       <% } %>
+      
+      
+      
+      
+      <% } %>
           </tbody>
         </table>
       </div>
@@ -85,13 +107,36 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Check-out data rows go here -->
+             <% if (result4.length === 0) { %>
+      <tr><td colspan="3">No check-outs today</td></tr>
+    <% } else { %>
+      <%   for(res of result4)  { %>
+
+        <tr>
+          <td>
+            <%= res.client_name %>
+          </td>
+          <td>
+            <%= res.rooms %>
+          </td>
+          <td>
+            <%= res.room_numbers %>
+          </td>
+        </tr>
+
+       <% } %>
+      
+      
+      
+      
+      <% } %>
+            
           </tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <script src="dashboard.js"></script>
+  
 </body>
 </html>
