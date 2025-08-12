@@ -13,7 +13,10 @@ app.use(express.json());
 const session=require('express-session');
 const { error } = require('console');
 const { stat } = require('fs');
+
 const today = new Date().toISOString().split('T')[0]; 
+=======
+const { render } = require('ejs');
 app.use(session({
   secret:"Stu@7890",
   resave:false,
@@ -195,7 +198,7 @@ app.post('/rooms', isAuthenticated, (req, res) => {
 });
 
 
-//checkin logic
+// checkin logic
 app.post("/checkin", isAuthenticated, (req, res) => {
     const {
         clientName, roomsAllotted, paxes, roomNo, mealPlan, checkinDate,
@@ -219,7 +222,7 @@ app.post("/checkin", isAuthenticated, (req, res) => {
         const checkinId = result.insertId; // Get the ID of the new check-in
 
         // 2. Assign each room to the check-in
-      const roomNumbers = Array.isArray(roomNo) ? roomNo : [roomNo];
+        const roomNumbers = Array.isArray(roomNo) ? roomNo : [roomNo];
 
         roomNumbers.forEach(num => {
             // Get the room ID for the room number
@@ -240,3 +243,9 @@ app.post("/checkin", isAuthenticated, (req, res) => {
         res.redirect("/dashboard");
     });
 });
+
+// attendance route from main branch
+app.get("/attendance", (req, res) => {
+    res.render("attendance.ejs");
+});
+
