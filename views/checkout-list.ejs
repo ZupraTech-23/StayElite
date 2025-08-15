@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h2>Pending Checkouts</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Guest</th>
+      <th>Rooms</th>
+      <th>Total Rooms</th>
+      <th>Check-in</th>
+      <th>Check-out</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (!bookings || bookings.length === 0) { %>
+      <tr><td colspan="6">No pending checkouts</td></tr>
+    <% } else { bookings.forEach(b => { %>
+      <tr>
+        <td><%= b.client_name %></td>
+        <td><%= b.room_numbers %></td>
+        <td><%= b.total_rooms %></td>
+        <td><%= b.checkin_date.toISOString().split('T')[0] %></td>
+        <td><%= b.checkout_date.toISOString().split('T')[0] %></td>
+        <td>
+          <a href="/checkout/<%= b.checkin_id %>">Checkout</a>
+          &nbsp;|&nbsp;
+          <a href="http://8080/invoice/create/<%= b.checkin_id %>">Generate Invoice</a>
+        </td>
+      </tr>
+    <% }) } %>
+  </tbody>
+</table>
+</body>
+</html>
