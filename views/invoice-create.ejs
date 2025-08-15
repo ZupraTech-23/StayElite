@@ -1,0 +1,37 @@
+<h2>Invoice for <%= booking.client_name %></h2>
+<p>Rooms: <%= booking.room_numbers %> (x <%= nights %> nights)</p>
+
+<form action="/invoice/create/<%= booking.checkin_id %>" method="post">
+  <input type="hidden" name="checkin_id" value="<%= booking.checkin_id %>">
+  <div>
+    <label>Room Charges</label>
+    <input type="number"  name="room_charges" value="0" >
+  </div>
+  <div>
+    <label>Meal Charges</label>
+    <input type="number" step="0.01" name="meal_charges" value="0">
+  </div>
+  <div>
+    <label>Other Charges</label>
+    <input type="number"  name="other_charges" value="0">
+  </div>
+  <div>
+    <label>Paid Amount</label>
+    <input type="number"  name="paid_amount" value="0">
+  </div>
+  <div>
+    <label>Payment Method</label>
+    <select name="payment_method">
+      <option value="Cash">Cash</option>
+      <option value="Card">Card</option>
+      <option value="UPI">UPI</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+    </select>
+  </div>
+  <div>
+    <label>Notes</label>
+    <textarea name="notes"></textarea>
+  </div>
+
+  <button type="submit">Save Invoice</button>
+</form>
