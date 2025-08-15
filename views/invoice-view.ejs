@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice - <%= invoice.invoice_id %></title>
+  <link rel="stylesheet" href="/style/invoice.css">
+</head>
+<body>
+  <div class="invoice-container">
+    <h1>Hotel Invoice</h1>
+    <p><strong>Invoice ID:</strong> <%= invoice.invoice_id %></p>
+    <p><strong>Client Name:</strong> <%= invoice.client_name %></p>
+    <p><strong>Check-in Date:</strong> <%= invoice.checkin_date %></p>
+    <p><strong>Check-out Date:</strong> <%= invoice.checkout_date %></p>
+    <p><strong>Room(s) Allocated:</strong> <%= invoice.rooms_allotted %></p>
+    <p><strong>Paxes:</strong> <%= invoice.paxes %></p>
+    <p><strong>Meal Plan:</strong> <%= invoice.meal_plan %></p>
+    <p><strong>Booking Source:</strong> <%= invoice.booking_from %></p>
+    <p><strong>Booked By:</strong> <%= invoice.booked_by %></p>
+    
+    <hr>
+
+    <h3>Charges</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Room Charges
+          </td>
+          <td> <%= invoice.room_charges %></td>
+        </tr>
+        <tr>
+          <td>
+            Meal Charges  </td>
+          <td> <%= invoice.meal_charges %></td>
+        </tr>
+        <tr>
+          <td>
+            Other Charges  </td>
+          <td> <%= invoice.other_charges %></td>
+        </tr>
+        
+        
+      </tbody>
+    </table>
+
+    <hr>
+    <p><strong>Total:</strong> ₹<%= invoice.total_amount %></p>
+
+    <button onclick="window.print()">Print Invoice</button>
+  </div>
+</body>
+</html>

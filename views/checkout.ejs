@@ -1,85 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="/style/checkout.css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hotel Check-Out Form</title>
-</head>
-<body>
+<h2>Checkout — <%= booking.client_name %></h2>
 
-<div class="container">
-  <div class="card">
-    <h1 style="text-align: center;">Hotel Check-Out Form</h1>
-    <form method="POST" action="/checkout">
-      <div>
-        <label>Client Name</label>
-        <input type="text" name="clientName" placeholder="Enter client's full name" required>
-      </div>
+<p><strong>Rooms:</strong> <%= booking.room_numbers %></p>
+<p><strong>Total rooms:</strong> <%= booking.total_rooms %></p>
+<p><strong>Check-in:</strong> <%= booking.checkin_date.toISOString().split('T')[0] %></p>
+<p><strong>Checkout (planned):</strong> <%= booking.checkout_date.toISOString().split('T')[0] %></p>
 
-      <div>
-        <label>Mention Room Number(s)</label>
-        <input type="text" name="roomNumbers" placeholder="e.g. 101,102" required>
-      </div>
-
-      <div>
-        <label>Total Rooms</label>
-        <input type="number" name="totalRooms" placeholder="Total Rooms" required>
-      </div>
-
-      <div>
-        <label>Check-In Date</label>
-        <input type="date" name="checkinDate" required>
-      </div>
-
-      <div>
-        <label>Check-Out Date</label>
-        <input type="date" name="checkoutDate" required>
-      </div>
-
-      <div>
-        <label>Total Number of Guests</label>
-        <input type="number" name="totalGuests" placeholder="e.g. 2" required>
-      </div>
-
-      <div>
-        <label>Number of Extra Beds Used</label>
-        <input type="number" name="extraBeds" placeholder="e.g. 2">
-      </div>
-
-      <div>
-        <label>Extra Services Used</label>
-        <textarea name="extraServices" placeholder="List any extra services (food, laundry, etc.)"></textarea>
-      </div>
-
-      <div>
-        <label>Pending Payments</label>
-        <input type="text" name="pendingPayments" placeholder="Enter amount or 'None'">
-      </div>
-
-      <div>
-        <label>Payment Mode</label>
-        <select name="paymentMode" required>
-          <option value="Cash">Cash</option>
-          <option value="Credit/Debit Card">Credit/Debit Card</option>
-          <option value="UPI">UPI</option>
-          <option value="Bank Transfer">Bank Transfer</option>
-          <option value="By Agent">By Agent</option>
-        </select>
-      </div>
-
-      <div class="full">
-        <label>Remarks / Feedback</label>
-        <textarea name="remarks" placeholder="Write remarks or feedback"></textarea>
-      </div>
-
-      <div class="actions">
-        <button type="button" class="btn-ghost" onclick="window.location.href='/dashboard'">Cancel</button>
-        <button type="submit" class="btn-primary">Submit Check-Out</button>
-      </div>
-    </form>
+<form method="POST" action="/checkout/<%= booking.checkin_id %>">
+  <div>
+    <label>Extra services used</label>
+    <textarea name="extra_services" placeholder="food, laundry..."></textarea>
   </div>
-</div>
 
-</body>
-</html>
+  <div>
+    <label>Any pending payment amount (leave 0 if none)</label>
+    <input type="number" name="pending_payments" step="0.01" value="0">
+  </div>
+
+  <div>
+    <label>Payment method</label>
+    <select name="payment_method">
+      <option value="Cash">Cash</option>
+      <option value="Card">Credit/Debit Card</option>
+      <option value="UPI">UPI</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+      <option value="Agent">By Agent</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Remarks</label>
+    <textarea name="remarks"></textarea>
+  </div>
+
+  <button type="submit">Confirm Checkout</button>
+  <a href="/checkout-list">Cancel</a>
+</form>
