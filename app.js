@@ -15,7 +15,7 @@ const { error } = require('console');
 const { stat } = require('fs');
 
 const today = new Date().toISOString().split('T')[0]; 
-=======
+
 const { render } = require('ejs');
 app.use(session({
   secret:"Stu@7890",
@@ -54,8 +54,8 @@ app.get('/login',(req,res)=>{
 })
 app.post('/login',(req,res)=>{
   let {username,password,role}=req.body;
-  let q="select * from user where username = ? and password= ? ";
-  connection.query(q,[username,password],(error,result)=>{
+  let q="select * from user where username = ? and password= ? and role = ?";
+  connection.query(q,[username,password,role],(error,result)=>{
     if(error){
       res.send("db error")
     }
