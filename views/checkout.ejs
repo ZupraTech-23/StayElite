@@ -1,37 +1,48 @@
-<h2>Checkout — <%= booking.client_name %></h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/checkout.css">
+  <title>Document</title>
+</head>
+<body>
+  <h2>Checkout — <%= booking.client_name %></h2>
 
-<p><strong>Rooms:</strong> <%= booking.room_numbers %></p>
-<p><strong>Total rooms:</strong> <%= booking.total_rooms %></p>
-<p><strong>Check-in:</strong> <%= booking.checkin_date.toISOString().split('T')[0] %></p>
-<p><strong>Checkout (planned):</strong> <%= booking.checkout_date.toISOString().split('T')[0] %></p>
+  <p><strong>Room No's:</strong> <%= booking.room_numbers %></p>
+  <p><strong>Total rooms:</strong> <%= booking.total_rooms %></p>
+  <p><strong>Check-in:</strong> <%= booking.checkin_date.toISOString().split('T')[0] %></p>
+  <p><strong>Checkout (planned):</strong> <%= booking.checkout_date.toISOString().split('T')[0] %></p>
 
-<form method="POST" action="/checkout/<%= booking.checkin_id %>">
-  <div>
-    <label>Extra services used</label>
-    <textarea name="extra_services" placeholder="food, laundry..."></textarea>
-  </div>
+  <form method="POST" action="/checkout/<%= booking.checkin_id %>">
+    <div>
+      <label>Extra services used</label>
+      <textarea name="extra_services" placeholder="food, laundry..."></textarea>
+    </div>
 
-  <div>
-    <label>Any pending payment amount (leave 0 if none)</label>
-    <input type="number" name="pending_payments" step="0.01" value="0">
-  </div>
+    <div>
+      <label>Any pending payment amount (leave 0 if none)</label>
+      <input type="number" name="pending_payments" step="0.01" value="0">
+    </div>
 
-  <div>
-    <label>Payment method</label>
-    <select name="payment_method">
-      <option value="Cash">Cash</option>
-      <option value="Card">Credit/Debit Card</option>
-      <option value="UPI">UPI</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-      <option value="Agent">By Agent</option>
-    </select>
-  </div>
+    <div>
+      <label>Payment method</label>
+      <select name="payment_method">
+        <option value="Cash">Cash</option>
+        <option value="Card">Credit/Debit Card</option>
+        <option value="UPI">UPI</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+        <option value="Agent">By Agent</option>
+      </select>
+    </div>
 
-  <div>
-    <label>Remarks</label>
-    <textarea name="remarks"></textarea>
-  </div>
+    <div>
+      <label>Remarks</label>
+      <textarea name="remarks"></textarea>
+    </div>
 
-  <button type="submit">Confirm Checkout</button>
-  <a href="/checkout-list">Cancel</a>
-</form>
+    <button type="submit">Confirm Checkout</button>
+    <a href="/checkout-list">Cancel</a>
+  </form>
+</body>
+</html>

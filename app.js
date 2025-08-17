@@ -54,8 +54,8 @@ app.get('/login',(req,res)=>{
 })
 app.post('/login',(req,res)=>{
   let {username,password,role}=req.body;
-  let q="select * from user where username = ? and password= ? ";
-  connection.query(q,[username,password],(error,result)=>{
+  let q="select * from user where username = ? and password= ? and role = ?";
+  connection.query(q,[username,password,role],(error,result)=>{
     if(error){
       res.send("db error")
     }
@@ -425,7 +425,54 @@ app.get("/attendance", (req, res) => {
     res.render("attendance.ejs");
 });
 
-// invoice list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.get('/invoice-list',(req,res)=>{
   let q1="select invoice_id, invoice_number,client_name,rooms_allotted,checkin_date,checkout_date from invoices";
