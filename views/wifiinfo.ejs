@@ -20,16 +20,18 @@
         <th>Wifi</th>
         <th>Password</th>
         <th>Location</th>
+        
       </tr>
     </thead>
     <tbody>
-      <% wifiList.forEach(function(wifi) { %>
+      <% for(res of result) { %>
         <tr>
-          <td><%= wifi.ssid %></td>
-          <td><%= wifi.password %></td>
-          <td><%= wifi.location %></td>
+          <td> <%= res.wifi_name %></td>
+          <td><%= res.password %></td>
+          <td><%= res.location %></td>
         </tr>
-      <% }) %>
+
+        <% } %>
     </tbody>
   </table>
   
