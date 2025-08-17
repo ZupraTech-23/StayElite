@@ -427,3 +427,61 @@ app.get("/attendance", (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get('/invoice-list',(req,res)=>{
+  let q1="select invoice_id, invoice_number,client_name,rooms_allotted,checkin_date,checkout_date from invoices";
+  connection.query(q1,(error,result)=>{
+    if(error){
+      console.error(error);
+      return res.send('db error');
+
+    }
+    res.render('invoice-list.ejs',{result});
+  })
+})

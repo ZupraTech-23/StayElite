@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> Invoices</h1>
+
+    <div class="main">
+        <table>
+            <tr>
+                <th>Invoice Number</th>
+                <th>Client Name</th>
+                <th>Rooms Allotted</th>
+                <th>Check-in Date</th>
+                <th>Check-out Date</th>
+                <th>Actions</th>
+            </tr>
+
+            <tbody>
+                <% if (result.length===0) { %>
+                    <td colspan="5"> No invoices</td>
+                    
+               <% } %>
+                <% for(res of result) { %>
+                    <tr>
+                        <td>
+                            <%= res.invoice_number %>
+
+                        </td>
+                        <td>
+                            <%= res.client_name %>
+
+                        </td>
+                        <td>
+                            <%= res.rooms_allotted %>
+
+                        </td>
+                        <td>
+                            <%= res.checkin_date.toDateString() %>
+
+                        </td>
+                        <td>
+                            <%= res.checkout_date.toDateString() %>
+                        </td>
+                        <td>
+                            <a href="http://localhost:8080/invoice/<%= res.invoice_id %>"> View Invoice</a>
+                        </td>
+                    </tr>
+
+               <% } %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
