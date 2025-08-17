@@ -1,112 +1,115 @@
-
-:root {
-  --bg: #c2d4b7;
-  --card: #ebe6e6;
-  --accent: #0847ce;
-  --muted: #000000;
-}
-
+/* ===== Base Page Styles ===== */
 body {
-  font-family: Inter, system-ui, Segoe UI, Arial;
-  background: linear-gradient(135deg, #7698e0, #26d8b7);
-  color: #0f172a;
-  padding: 28px;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #00b4d8 2%, #080808 100%);
+  margin: 0;
+  padding: 20px;
+  color: #333;
+  min-height: 100vh;
 }
 
-.container {
-  max-width: 820px;
-  margin: 0 auto;
+/* ===== Page Heading ===== */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  color: #000000;
 }
 
-.card {
-  background: var(--card);
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(12, 17, 43, 0.08);
-  padding: 22px;
+/* ===== Booking Info Text ===== */
+p {
+  margin: 8px 0;
+  font-size: 1rem;
+  color: white;
+  font-weight: 700;
 }
 
-h1 {
-  font-size: 20px;
-  margin: 0 0 12px;
+p strong {
+  color: #030303;
+  font-weight: 600;
 }
 
+/* ===== Form Container ===== */
 form {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  max-width: 500px;
+  margin: 25px auto;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* ===== Form Inputs & Labels ===== */
+form div {
+  margin-bottom: 15px;
 }
 
 label {
   display: block;
-  font-size: 13px;
   margin-bottom: 6px;
-  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="date"],
-select,
-textarea {
+input, select, textarea {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #030d0e;
-  border-radius: 8px;
-  font-size: 14px;
-  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: #fff;
+  transition: border-color 0.2s ease-in-out;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.15);
 }
 
 textarea {
-  min-height: 90px;
+  min-height: 70px;
   resize: vertical;
 }
 
-.full {
-  grid-column: 1 / -1;
-}
-
-.actions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-top: 8px;
-  grid-column: 1 / -1;
-}
-
+/* ===== Buttons ===== */
 button {
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 0;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500;
+  transition: background 0.2s ease-in-out;
 }
 
-.btn-primary {
-  background: var(--accent);
-  color: white;
+button:hover {
+  background: #0056b3;
 }
 
-.btn-ghost {
-  background: transparent;
-  border: 1px solid #cbd5e1;
+a {
+  display: inline-block;
+  margin-left: 10px;
+  text-decoration: none;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  background: #6c757d;
+  color: #fff;
+  transition: background 0.2s ease-in-out;
 }
 
-.note {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 8px;
+a:hover {
+  background: #5a6268;
 }
 
-.summary {
-  background: #f8fafc;
-  border: 1px dashed #000000;
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 12px;
-}
-
-@media (max-width: 720px) {
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
   form {
-    grid-template-columns: 1fr;
+    padding: 15px;
   }
 }
+

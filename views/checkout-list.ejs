@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/checkoutlist.css">
   <title>Document</title>
 </head>
 <body>
@@ -12,7 +13,7 @@
   <thead>
     <tr>
       <th>Guest</th>
-      <th>Rooms</th>
+      <th>Room No's</th>
       <th>Total Rooms</th>
       <th>Check-in</th>
       <th>Check-out</th>
@@ -21,7 +22,7 @@
   </thead>
   <tbody>
     <% if (!bookings || bookings.length === 0) { %>
-      <tr><td colspan="6">No pending checkouts</td></tr>
+      <tr><td class="pending" colspan="6">No pending checkouts</td></tr>
     <% } else { bookings.forEach(b => { %>
       <tr>
         <td><%= b.client_name %></td>

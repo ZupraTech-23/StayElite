@@ -425,3 +425,5 @@ app.get("/attendance", (req, res) => {
     res.render("attendance.ejs");
 });
 
+
+
