@@ -426,7 +426,7 @@ app.get("/attendance", (req, res) => {
 });
 
 
-app.get('/invoice-list',(req,res)=>{
+app.get('/invoice-list',isAuthenticated,(req,res)=>{
   let q1="select invoice_id, invoice_number,client_name,rooms_allotted,checkin_date,checkout_date from invoices";
   connection.query(q1,(error,result)=>{
     if(error){
@@ -435,5 +435,33 @@ app.get('/invoice-list',(req,res)=>{
 
     }
     res.render('invoice-list.ejs',{result});
+  })
+})
+
+
+
+app.post('/add-wifi',isAuthenticated,(req,res)=>{
+  let {wifi_name,password,location}=req.body;
+  let q1="insert into wifi(wifi_name ,password,location) values(?,?,?)";
+  connection.query(q1,[wifi_name,password,location],(error,result)=>{
+    if(error){
+      console.error(error)
+      return res.send("db error");
+
+      
+    }
+    res.redirect('http://localhost:8080/wifi-info');
+  })
+})
+
+app.get('/wifi-info',isAuthenticated,(req,res)=>{
+  let q="select * from wifi";
+  connection.query(q,(error,result)=>{
+    if(error){
+      console.error(error);
+      return res.send("db error");
+    }
+
+    res.render("wifiinfo.ejs",{result});
   })
 })
