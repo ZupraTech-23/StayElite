@@ -1,0 +1,116 @@
+/* invoice.css */
+
+/* Reset and fonts */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #f4f6f8;
+  color: #333;
+  padding: 30px;
+}
+
+/* Invoice container */
+.invoice-container {
+  max-width: 800px;
+  background: #fff;
+  margin: auto;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.invoice-container h1 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 28px;
+  color: #222;
+}
+
+.invoice-container p {
+  font-size: 15px;
+  margin: 6px 0;
+}
+
+/* Section headings */
+.invoice-container h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #444;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+thead {
+  background: #f0f2f5;
+}
+
+th, td {
+  padding: 12px 10px;
+  text-align: left;
+}
+
+th {
+  font-weight: 600;
+  color: #444;
+}
+
+tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+/* Total section */
+.invoice-container strong {
+  color: #111;
+  font-weight: 600;
+}
+
+hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* Print button */
+button {
+  background: #4f46e5;
+  color: #fff;
+  padding: 12px 18px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+button:hover {
+  background: #4338ca;
+}
+
+/* Print-friendly styles */
+@media print {
+  body {
+    background: #fff;
+    padding: 0;
+  }
+  .invoice-container {
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+  }
+  button {
+    display: none;
+  }
+}

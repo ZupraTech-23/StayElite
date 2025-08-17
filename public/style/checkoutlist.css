@@ -1,0 +1,104 @@
+/* General page styling */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+/* Heading style */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #222;
+}
+
+/* Table container styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Table header */
+thead {
+  background: #007bff;
+  color: #fff;
+}
+
+th {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+/* Table rows */
+td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #000000;
+  font-size: 0.95rem;
+  font-weight: 500;
+  
+}
+
+/* Alternating row color */
+tbody tr:nth-child(even) {
+  background: #f4f6f8;
+}
+
+/* No pending message */
+.pending {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #888;
+}
+
+/* Action links */
+td a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+td a:hover {
+  text-decoration: none;
+
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  
+  thead {
+    display: none;
+  }
+  
+  tr {
+    margin-bottom: 15px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  }
+  
+  td {
+    padding: 10px;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+  }
+  
+  td:last-child {
+    border-bottom: none;
+  }
+}
+

@@ -54,8 +54,8 @@ app.get('/login',(req,res)=>{
 })
 app.post('/login',(req,res)=>{
   let {username,password,role}=req.body;
-  let q="select * from user where username = ? and password= ? ";
-  connection.query(q,[username,password],(error,result)=>{
+  let q="select * from user where username = ? and password= ? and role = ?";
+  connection.query(q,[username,password,role],(error,result)=>{
     if(error){
       res.send("db error")
     }
@@ -424,4 +424,6 @@ app.post("/checkin", isAuthenticated, (req, res) => {
 app.get("/attendance", (req, res) => {
     res.render("attendance.ejs");
 });
+
+
 
