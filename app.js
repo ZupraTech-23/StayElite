@@ -427,14 +427,33 @@ app.get("/attendance", (req, res) => {
 
 
 app.get('/invoice-list',isAuthenticated,(req,res)=>{
-  let q1="select invoice_id, invoice_number,client_name,rooms_allotted,checkin_date,checkout_date from invoices";
-  connection.query(q1,(error,result)=>{
+  let {search}=req.query;
+  console.log(search);
+  let value=[];
+
+
+  let q1;
+  
+  if(search){
+    q1=`select invoice_id, invoice_number,client_name,rooms_allotted,checkin_date,checkout_date from invoices where client_name like ? OR invoice_number like ? `;
+    value.push(`%${search}%`);
+    console.log(value);
+
+
+  }
+  else{
+    q1="select invoice_id, invoice_number,client_name,rooms_allotted,checkin_date,checkout_date from invoices";
+  }
+
+  
+
+  connection.query(q1,[value,value],(error,result)=>{
     if(error){
       console.error(error);
       return res.send('db error');
 
     }
-    res.render('invoice-list.ejs',{result});
+    res.render('invoice-list.ejs',{result,search});
   })
 })
 
