@@ -10,6 +10,10 @@
     <h1> Invoices</h1>
 
     <div class="main">
+        <form action="/invoice-list" method="get" >
+            <input type="text" placeholder="Search by name or inovice number" name="search" value= "<%= search %>">
+            <input type="submit" value="Search">
+        </form>
         <table>
             <tr>
                 <th>Invoice Number</th>

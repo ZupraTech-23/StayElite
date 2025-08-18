@@ -7,19 +7,38 @@
 </head>
 <body>
   <div class="invoice-container">
-    <h1>Hotel Invoice</h1>
-    <p><strong>Invoice ID:</strong> <%= invoice.invoice_id %></p>
-    <p><strong>Client Name:</strong> <%= invoice.client_name %></p>
-    <p><strong>Check-in Date:</strong> <%= invoice.checkin_date %></p>
-    <p><strong>Check-out Date:</strong> <%= invoice.checkout_date %></p>
-    <p><strong>Room(s) Allocated:</strong> <%= invoice.rooms_allotted %></p>
-    <p><strong>Paxes:</strong> <%= invoice.paxes %></p>
-    <p><strong>Meal Plan:</strong> <%= invoice.meal_plan %></p>
-    <p><strong>Booking Source:</strong> <%= invoice.booking_from %></p>
-    <p><strong>Booked By:</strong> <%= invoice.booked_by %></p>
-    
-    <hr>
 
+    <!-- Header -->
+    <div class="invoice-header">
+      <div class="logo"><img src="https://hotelkaisar.com/wp-content/uploads/2021/09/hotel.png" alt=""></div>
+      <div class="company-info">
+        <strong>Hotel Paradise</strong><br>
+        Main Street, City<br>
+        +91-9876543210<br>
+        info@hotelparadise.com
+      </div>
+    </div>
+
+    <!-- Invoice details -->
+    <div class="invoice-details">
+      <div class="bill-to">
+        <h3>Client Information</h3>
+        <p><strong>Client Name:</strong> <%= invoice.client_name %></p>
+        <p><strong>Paxes:</strong> <%= invoice.paxes %></p>
+        <p><strong>Meal Plan:</strong> <%= invoice.meal_plan %></p>
+      </div>
+      <div class="invoice-meta">
+        <h3>Booking Details</h3>
+        <p><strong>Invoice ID:</strong> <%= invoice.invoice_id %></p>
+        <p><strong>Check-in Date:</strong> <%= invoice.checkin_date.toDateString() %></p>
+        <p><strong>Check-out Date:</strong> <%= invoice.checkout_date.toDateString() %></p>
+        <p><strong>Room(s) Allocated:</strong> <%= invoice.rooms_allotted %></p>
+        <p><strong>Booking Source:</strong> <%= invoice.booking_from %></p>
+        <p><strong>Booked By:</strong> <%= invoice.booked_by %></p>
+      </div>
+    </div>
+
+    <!-- Charges -->
     <h3>Charges</h3>
     <table>
       <thead>
@@ -44,10 +63,31 @@
       </tbody>
     </table>
 
-    <hr>
-    <p><strong>Total:</strong> ₹<%= invoice.total_amount %></p>
+    <!-- Totals -->
+    <div class="invoice-totals">
+      <table>
+        <tr>
+          <td><strong>Total:</strong></td>
+          <td><strong>₹<%= invoice.total_amount %></strong></td>
+        </tr>
+      </table>
+    </div>
 
+    <!-- Print button -->
     <button onclick="window.print()">Print Invoice</button>
+
+    <!-- Footer -->
+    <div class="footer-note">
+      Thank you for staying with us!
+
+
+    </div>
+    <footer class="invoice-footer">
+    <div class="powered-by">
+        Powered by <strong>Zupra Technologies</strong>
+    </div>
+</footer>
+
   </div>
 </body>
 </html>
