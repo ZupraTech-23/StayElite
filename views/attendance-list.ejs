@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attendance List</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      background: #fff;
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 1000px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .date-picker {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+    }
+    .date-picker input[type="date"] {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+    table th {
+      background: #667eea;
+      color: white;
+    }
+    table tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    .status {
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 6px;
+      color: white;
+    }
+    .Present { background-color: #4CAF50; }
+    .Absent { background-color: #f44336; }
+    .Leave { background-color: #ff9800; }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <h1>Attendance List</h1>
+
+  <!-- Date filter form -->
+  <form method="GET" action="/attendance-list" class="date-picker" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+  <label for="date" style="margin: 0; font-weight: bold;">Select Date:</label>
+  <input type="date" id="date" name="date" value="<%= selectedDate %>" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+  <button type="submit" style="padding: 7px 14px; border-radius: 6px; background: #667eea; color: white; border: none; cursor: pointer; font-size: 14px;">Load</button>
+</form>
+
+  <!-- Dynamic heading showing selected date -->
+  <h2 id="attendance-date">Attendance for <%= selectedDate %></h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Designation</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% results.forEach(employee => { %>
+        <tr>
+          <td><%= employee.id %></td>
+          <td><%= employee.name %></td>
+          <td><%= employee.designation %></td>
+          <td>
+            <% if(employee.status) { %>
+              <span class="status <%= employee.status %>"><%= employee.status %></span>
+            <% } else { %>
+              <span class="status">Not Marked</span>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

@@ -422,13 +422,71 @@ app.post("/checkin", isAuthenticated, (req, res) => {
 
 // attendance route from main branch
 app.get("/attendance", (req, res) => {
-    res.render("attendance.ejs");
+  let q="select * from employees";
+  connection.query(q,(error,result)=>{
+    if(error){
+      console.error(error);
+      return res.send('db error');
+    }
+
+    res.render("attendance.ejs",{result});
+
+
+  })
+    
 });
+app.post('/attendance', (req, res) => {
+  const { attendance } = req.body; // { emp_1: 'Present', emp_3: 'Absent', ... }
+
+  const today = new Date();
+  const dateString = today.toISOString().slice(0, 10); // YYYY-MM-DD
+
+  // Loop through each employee in attendance object
+  for (const empId in attendance) {
+    const status = attendance[empId];
+    const id = empId.replace('emp_', ''); // extract numeric employee ID
+
+    // Insert attendance into the table
+    const query = 'INSERT INTO attendance (employee_id, status, date) VALUES (?, ?, ?)';
+    connection.query(query, [id, status, dateString], (err, result) => {
+      if (err) {
+        console.error(`Error saving attendance for employee ${id}:`, err);
+      }
+    });
+  }
+
+  res.redirect("http://localhost8080/dashboard");
+});
+// Attendance list page
+app.get('/attendance-list', (req, res) => {
+  let date = req.query.date;
+
+  // If no date selected, use today
+  if (!date) {
+    const today = new Date();
+    date = today.toISOString().slice(0, 10);
+  }
+
+  // Query to fetch attendance for the selected date
+  const query = `
+    SELECT e.id, e.name, e.designation, a.status
+    FROM employees e
+    LEFT JOIN attendance a
+      ON e.id = a.employee_id AND a.date = ?
+    ORDER BY e.id
+  `;
+
+  connection.query(query, [date], (err, results) => {
+    if (err) return res.send('Database error');
+    res.render('attendance-list.ejs', { results, selectedDate: date });
+  });
+});
+
 
 
 app.get('/invoice-list',isAuthenticated,(req,res)=>{
   let {search}=req.query;
-  console.log(search);
+  
   let value=[];
 
 
@@ -437,7 +495,7 @@ app.get('/invoice-list',isAuthenticated,(req,res)=>{
   if(search){
     q1=`select invoice_id, invoice_number,client_name,rooms_allotted,checkin_date,checkout_date from invoices where client_name like ? OR invoice_number like ? `;
     value.push(`%${search}%`);
-    console.log(value);
+
 
 
   }
@@ -482,5 +540,19 @@ app.get('/wifi-info',isAuthenticated,(req,res)=>{
     }
 
     res.render("wifiinfo.ejs",{result});
+  })
+})
+app.get('/add-employee',(req,res)=>{
+  res.render('add-employee.ejs');
+})
+app.post('/add-employee',(req,res)=>{
+  let {name,phone,address,designation}=req.body;
+  let q="insert into employees (name,phone,address,designation) values(?,?,?,?)";
+  connection.query(q,[name,phone,address,designation],(error,result)=>{
+    if(error){
+      console.error(error);
+      return res.send("db error");
+    }
+    res.send('Added successfully');
   })
 })
