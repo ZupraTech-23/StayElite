@@ -1,0 +1,63 @@
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest List</title>
+  <link rel="stylesheet" href="/public/style/guestinfo.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Guest Info</h1>
+
+    <!-- Search Bar -->
+    <form action="/guests" method="get" class="search-bar">
+      <input 
+        type="text" 
+        name="search" 
+        placeholder="Search by guest name..." 
+        value="<%= typeof search !== 'undefined' ? search : '' %>">
+      <button type="submit">Search</button>
+    </form>
+
+    <!-- Guest Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Guest Name</th>
+          <th>Room No's</th>
+          <th>Check-in Date</th>
+          <th>Check-out Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (guests.length > 0) { %>
+          <% guests.forEach((guest, index) => { %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= guest.name %></td>
+              <td><%= guest.room_no %></td>
+              <td><%= guest.checkin_date %></td>
+              <td><%= guest.checkout_date %></td>
+            
+              <td>
+                <a href="/guests/<%= guest.id %>" class="btn-view">View</a>
+              </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="5">No guests found</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+
+</body>
+</html>
