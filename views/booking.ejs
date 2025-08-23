@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="/public/style/booking.css">
+    <title>booking</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Room Booking</title>
+  <link rel="stylesheet" href="/public/style/booking.css">
+</head>
+<body>
+  <h1>Room Booking</h1>
+
+  <!-- Room List -->
+  <h2>Available Rooms</h2>
+  <table>
+    <tr>
+      <th>Room No</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    <% rooms.forEach(room => { %>
+      <tr>
+        <td><%= room.room_no %></td>
+        <td><%= room.type %></td>
+        <td>
+          <% if(room.isBooked) { %>
+            <span style="color: red;">Booked</span>
+          <% } else { %>
+            <span style="color: green;">Available</span>
+          <% } %>
+        </td>
+        <td>
+          <% if(!room.isBooked) { %>
+            <form action="/book-room" method="POST">
+              <input type="hidden" name="room_no" value="<%= room.room_no %>">
+              <input type="text" name="client_name" placeholder="Client Name" required>
+              <input type="number" name="advance" placeholder="Advance Amount" required>
+              <input type="number" name="price" placeholder="Price" required>
+              <input type="date" name="date" required>
+              <select name="status" required>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Pending">Pending</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <button type="submit">Book</button>
+            </form>
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+
+  <!-- Existing Bookings -->
+  <h2>Bookings</h2>
+  <table>
+    <tr>
+      <th>Room No</th>
+      <th>Client Name</th>
+      <th>Advance</th>
+      <th>Price</th>
+      <th>Balance</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Update</th>
+    </tr>
+    <% bookings.forEach(b => { %>
+      <tr>
+        <td><%= b.room_no %></td>
+        <td><%= b.client_name %></td>
+        <td><%= b.advance %></td>
+        <td><%= b.price %></td>
+        <td><%= b.price - b.advance %></td>
+        <td><%= b.date %></td>
+        <td><%= b.status %></td>
+        <td>
+          <form action="/update-booking" method="POST">
+            <input type="hidden" name="id" value="<%= b.id %>">
+            <input type="date" name="date" value="<%= b.date %>">
+            <input type="number" name="advance" value="<%= b.advance %>">
+            <input type="number" name="price" value="<%= b.price %>">
+            <select name="status">
+              <option value="Confirmed" <%= b.status === 'Confirmed' ? 'selected' : '' %>>Confirmed</option>
+              <option value="Pending" <%= b.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+              <option value="Cancelled" <%= b.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+            </select>
+            <button type="submit">Update</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+</body>
+</html>
+
+</body>
+</html>
