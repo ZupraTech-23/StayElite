@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Check-in Information</title>
+  <link rel="stylesheet" href="/style/guest-info-id.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>Guest Information</h2>
+
+      <div class="info"><label>Client Name:</label> <p><%= checkin.client_name %></p></div>
+      <div class="info"><label>Rooms Allotted:</label> <p><%= checkin.rooms_allotted %></p></div>
+      <div class="info"><label>Paxes:</label> <p><%= checkin.paxes %></p></div>
+      <div class="info"><label>Meal Plan:</label> <p><%= checkin.meal_plan %></p></div>
+      <div class="info"><label>Check-in Date:</label> <p><%= checkin.checkin_date.toDateString() %></p></div>
+      <div class="info"><label>Check-out Date:</label> <p><%= checkin.checkout_date.toDateString() %></p></div>
+      <div class="info"><label>Client Address:</label> <p><%= checkin.client_address %></p></div>
+      <div class="info"><label>ID Proof Type:</label> <p><%= checkin.id_proof_type %></p></div>
+      <div class="info"><label>ID Proof No:</label> <p><%= checkin.id_proof_no %></p></div>
+      <% if (checkin.other_id_text) { %>
+      <div class="info"><label>Other ID Text:</label> <p><%= checkin.other_id_text %></p></div>
+      <% } %>
+      <div class="info"><label>Extra Beds:</label> <p><%= checkin.beds %></p></div>
+      <div class="info"><label>Booking From:</label> <p><%= checkin.booking_from %></p></div>
+      <div class="info"><label>Booked By:</label> <p><%= checkin.booked_by %></p></div>
+      <div class="info">
+  <label>Notes:</label>
+  <% if (checkin.notes) { %>
+    <div class="notes-box">
+      <% checkin.notes.split(";").forEach(note => { %>
+        <p><%= note.trim() %></p>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p>No notes available</p>
+  <% } %>
+</div>
+
+      <div class="info"><label>Created At:</label> <p><%= checkin.created_at.toLocaleString() %></p></div>
+
+      <h3>Rooms Assigned</h3>
+      <table class="rooms-table">
+        <thead>
+          <tr>
+            <th>Room ID</th>
+            <th>Room Number</th>
+            <th>Room Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% rooms.forEach(room => { %>
+            <tr>
+              <td><%= room.room_id %></td>
+              <td><%= room.room_number %></td>
+              <td><%= room.room_type %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <div class="buttons">
+        <a href="/checkins" class="btn back">Back</a>
+        <a href="/checkins/edit/<%= checkin.checkin_id %>" class="btn edit">Edit</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

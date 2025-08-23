@@ -1,0 +1,156 @@
+/* General page styling */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Center content */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+}
+
+/* Card box */
+.card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  width: 850px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Heading */
+.card h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #222;
+  font-size: 28px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Subheading */
+.card h3 {
+  margin-top: 35px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #444;
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+}
+
+/* Info sections */
+.info {
+  margin-bottom: 18px;
+}
+
+.info label {
+  font-weight: 600;
+  color: #555;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.info p {
+  background: #f9fafc;
+  padding: 10px;
+  border-radius: 6px;
+  margin: 0;
+  font-size: 15px;
+  color: #222;
+  border: 1px solid #e5e5e5;
+}
+
+/* Notes special box */
+.notes-box {
+  background: #fffbe7;
+  border: 1px solid #f1e5a6;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 6px;
+}
+
+.notes-box p {
+  margin: 5px 0;
+  padding: 6px 8px;
+  background: #fff;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Rooms table */
+.rooms-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.rooms-table th,
+.rooms-table td {
+  padding: 12px;
+  border: 1px solid #e5e5e5;
+  text-align: left;
+}
+
+.rooms-table th {
+  background: #007bff;
+  color: #fff;
+  font-weight: 600;
+}
+
+.rooms-table tr:nth-child(even) {
+  background: #f9fafc;
+}
+
+.rooms-table tr:hover {
+  background: #f1f7ff;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn.back {
+  background: #6c757d;
+  color: #fff;
+}
+
+.btn.back:hover {
+  background: #5a6268;
+}
+
+.btn.edit {
+  background: #007bff;
+  color: #fff;
+}
+
+.btn.edit:hover {
+  background: #0056b3;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

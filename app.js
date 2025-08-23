@@ -183,7 +183,7 @@ app.get('/checkout-list',isAuthenticated, (req, res) => {
     FROM checkins c
     JOIN checkin_rooms cr ON c.checkin_id = cr.checkin_id
     JOIN rooms r ON cr.room_id = r.room_id
-    WHERE c.status = 'active' AND DATE(c.checkout_date) <= CURDATE()
+    WHERE c.status = 'active' 
     GROUP BY c.checkin_id
     ORDER BY c.checkout_date ASC;
   `;
@@ -215,7 +215,7 @@ app.get('/checkout/:id', isAuthenticated, (req, res) => {
 });
 app.post('/checkout/:id', isAuthenticated, (req, res) => {
   const checkinId = req.params.id;
-  const { extra_services, pending_payments, payment_method, remarks } = req.body;
+  const { extra_services, payment_method, remarks } = req.body;
 
   // Start transaction
   connection.beginTransaction(err => {
@@ -250,7 +250,7 @@ app.post('/checkout/:id', isAuthenticated, (req, res) => {
           const updateMeta = `
             UPDATE checkins SET notes = CONCAT(IFNULL(notes,''), '\nCheckout notes: ', ?), created_at = created_at WHERE checkin_id = ?
           `;
-          connection.query(updateMeta, [`Extra: ${extra_services}; Pending: ${pending_payments}; Payment: ${payment_method}; Remarks: ${remarks}`, checkinId], (err4) => {
+          connection.query(updateMeta, [`Extra Services: ${extra_services}; Payment Method: ${payment_method}; Remarks: ${remarks}`, checkinId], (err4) => {
             if (err4) return connection.rollback(() => { console.error(err4); res.status(500).send("DB error"); });
 
             // Commit
@@ -305,6 +305,7 @@ app.post('/invoice/create/:id', isAuthenticated, (req, res) => {
 
   // total
   const total = parseFloat(room_charges) + parseFloat(meal_charges) + parseFloat(other_charges);
+  
   const invoiceNumber = `INV-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${checkinId}`;
 
   // get basic client info for snapshot
@@ -324,7 +325,7 @@ app.post('/invoice/create/:id', isAuthenticated, (req, res) => {
     connection.query(insertSql, [
       checkinId, invoiceNumber, c.client_name, c.rooms_allotted, c.paxes, c.meal_plan,
       c.checkin_date, c.checkout_date, room_charges, meal_charges, other_charges,
-      total, paid_amount, payment_method, notes
+      total, paid_amount,  payment_method, notes
     ], (err2, result) => {
       if (err2) { console.error(err2); return res.status(500).send('DB error'); }
       const invoiceId = result.insertId;
@@ -440,6 +441,7 @@ app.post('/attendance', (req, res) => {
 
   const today = new Date();
   const dateString = today.toISOString().slice(0, 10); // YYYY-MM-DD
+  console.log(attendance);
 
   // Loop through each employee in attendance object
   for (const empId in attendance) {
@@ -455,7 +457,7 @@ app.post('/attendance', (req, res) => {
     });
   }
 
-  res.redirect("http://localhost8080/dashboard");
+  res.redirect("http://localhost:8080/dashboard");
 });
 // Attendance list page
 app.get('/attendance-list', (req, res) => {
@@ -546,9 +548,10 @@ app.get('/add-employee',(req,res)=>{
   res.render('add-employee.ejs');
 })
 app.post('/add-employee',(req,res)=>{
-  let {name,phone,address,designation}=req.body;
-  let q="insert into employees (name,phone,address,designation) values(?,?,?,?)";
-  connection.query(q,[name,phone,address,designation],(error,result)=>{
+  let {name,phone,address,designation,aadhar}=req.body;
+  console.log(req.body);
+  let q="insert into employees (name,phone,address,aadhar,designation) values(?,?,?,?,?)";
+  connection.query(q,[name,phone,address,aadhar,designation],(error,result)=>{
     if(error){
       console.error(error);
       return res.send("db error");
@@ -556,3 +559,65 @@ app.post('/add-employee',(req,res)=>{
     res.send('Added successfully');
   })
 })
+
+app.get('/employee-list',(req,res)=>{
+  let {search}=req.query;
+  let q;
+  let value=[];
+  if (search){
+    q=`select * from employees where name LIKE ?`;
+    value.push(`%${search}%`);
+    
+  }
+  else{
+    q="select * from employees";
+  }
+
+  connection.query(q,value,(error,result)=>{
+    if(error){
+      console.error(error);
+      return res.send("db error");
+    }
+    console.log(result);
+    res.render('employtable.ejs',{result,search});
+  })
+})
+
+app.get('/guest-info',(req,res)=>{
+  let q="select * from checkins";
+  connection.query(q,(error,result)=>{
+    if(error){
+      console.error(error);
+
+      return res.send("db error");
+
+
+    }
+    res.render('guestinfo.ejs',{result});
+  })
+})
+
+app.get("/guest-info/:id", (req, res) => {
+  const checkinId = req.params.id;
+
+  const checkinQuery = "SELECT * FROM checkins WHERE checkin_id = ?";
+  const roomsQuery = `
+    SELECT cr.room_id, r.room_number, r.room_type
+    FROM checkin_rooms cr
+    JOIN rooms r ON cr.room_id = r.room_id
+    WHERE cr.checkin_id = ?
+  `;
+
+  connection.query(checkinQuery, [checkinId], (err, checkinResult) => {
+    if (err) throw err;
+    if (checkinResult.length === 0) return res.send("Check-in not found");
+
+    connection.query(roomsQuery, [checkinId], (err, roomsResult) => {
+      if (err) throw err;
+      res.render("guest-info-id.ejs", {
+        checkin: checkinResult[0],
+        rooms: roomsResult
+      });
+    });
+  });
+});

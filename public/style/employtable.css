@@ -49,6 +49,32 @@ h1 {
   cursor: pointer;
   transition: background 0.3s;
 }
+.add-btn{
+  padding: 10px 15px;
+  border: none;
+  background: #00b09b;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  transition: background 0.3s;
+
+
+}
+.add-employee a{
+  text-decoration: none;
+  color: white;
+  font-size: larger;
+  font-weight: 600;
+}
+.add-employee{
+  margin-bottom: 18px;
+
+}
+.add-btn:hover{
+   background: #028a76;
+
+}
 
 .search-bar button:hover {
   background: #028a76;

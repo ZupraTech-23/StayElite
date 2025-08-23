@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guest List</title>
-  <link rel="stylesheet" href="/public/style/guestinfo.css">
+  <link rel="stylesheet" href="/style/guestinfo.css">
 </head>
 <body>
   <div class="container">
@@ -27,24 +27,24 @@
         <tr>
           <th>#</th>
           <th>Guest Name</th>
-          <th>Room No's</th>
+          <th>Room Allotted</th>
           <th>Check-in Date</th>
           <th>Check-out Date</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <% if (guests.length > 0) { %>
-          <% guests.forEach((guest, index) => { %>
+        <% if (result.length > 0) { %>
+          <% result.forEach((guest, index) => { %>
             <tr>
               <td><%= index + 1 %></td>
-              <td><%= guest.name %></td>
-              <td><%= guest.room_no %></td>
-              <td><%= guest.checkin_date %></td>
-              <td><%= guest.checkout_date %></td>
+              <td><%= guest.client_name %></td>
+              <td><%= guest.rooms_allotted %></td>
+              <td><%= guest.checkin_date.toDateString() %></td>
+              <td><%= guest.checkout_date.toDateString() %></td>
             
               <td>
-                <a href="/guests/<%= guest.id %>" class="btn-view">View</a>
+                <a href="/guest-info/<%= guest.checkin_id %>" class="btn-view">View</a>
               </td>
             </tr>
           <% }) %>
