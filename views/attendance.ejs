@@ -96,6 +96,24 @@
       opacity: 0.9;
       transform: scale(1.05);
     }
+    .attendance-listbtn {
+  
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #667eea, #955dcc);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .attendance-listbtn a{
+      color: white;
+      text-decoration: none;
+    }
 
     @media (max-width: 768px) {
       .attendance-options {
@@ -108,6 +126,7 @@
 <body>
   <div class="container">
     <h1>Mark Employee Attendance</h1>
+    <button  class="attendance-listbtn"><a href="http://localhost:8080/attendance-list">Attendance List</a></button>
     <form action="/attendance" method="POST">
       <table>
         <thead>
