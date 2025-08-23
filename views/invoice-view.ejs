@@ -72,6 +72,15 @@
         </tr>
       </table>
     </div>
+    <div class="invoice-totals">
+      <table>
+        <tr>
+          <td><strong>Balance Amount:</strong></td>
+          <td><strong>₹<%= invoice.total_amount-invoice.paid_amount %></strong></td>
+        </tr>
+      </table>
+    </div>
+
 
     <!-- Print button -->
     <button onclick="window.print()">Print Invoice</button>

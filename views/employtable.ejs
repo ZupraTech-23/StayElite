@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee List</title>
-  <link rel="stylesheet" href="/public/style/employtable.css">
+  <link rel="stylesheet" href="/style/employtable.css">
 </head>
 <body>
   <div class="container">
     <h1>Employee List</h1>
 
     <!-- Search Bar -->
-    <form action="/employees" method="get" class="search-bar">
+    <form action="/employee-list" method="get" class="search-bar">
       <input 
         type="text" 
         name="search" 
@@ -19,6 +19,9 @@
         value="<%= typeof search !== 'undefined' ? search : '' %>">
       <button type="submit">Search</button>
     </form>
+    <div class="add-employee">
+      <a href="http://localhost:8080/add-employee" class="add-btn">Add Employee</a>
+    </div>
 
     <!-- Employee Table -->
     <table>
@@ -32,14 +35,14 @@
         </tr>
       </thead>
       <tbody>
-        <% if (employees.length > 0) { %>
-          <% employees.forEach((emp, index) => { %>
+        <% if (result.length > 0) { %>
+          <% result.forEach((emp, index) => { %>
             <tr>
               <td><%= index + 1 %></td>
               <td><%= emp.name %></td>
-              <td><%= emp.role %></td>
+              <td><%= emp.designation%></td>
               <td><%= emp.phone %></td>
-              <td><%= emp.aadhaar %></td>
+              <td><%= emp.aadhar %></td>
             </tr>
           <% }) %>
         <% } else { %>

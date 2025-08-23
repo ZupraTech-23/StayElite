@@ -63,7 +63,12 @@
     }
     .Present { background-color: #4CAF50; }
     .Absent { background-color: #f44336; }
-    .Leave { background-color: #ff9800; }
+    
+    .On-leave{
+      background-color: #e4ba7c;
+      
+
+    }
   </style>
 </head>
 <body>
@@ -99,7 +104,7 @@
             <% if(employee.status) { %>
               <span class="status <%= employee.status %>"><%= employee.status %></span>
             <% } else { %>
-              <span class="status">Not Marked</span>
+              <span class="status" style="color: black;">Not Marked</span>
             <% } %>
           </td>
         </tr>
