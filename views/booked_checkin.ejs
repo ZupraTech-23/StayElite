@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/style/checkin.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Guest Check‑In Form</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Guest Check‑In Details</h1>
+
+            <form id="checkinForm" method="POST" action="/bookings/<%= booking.id %>/checkin" autocomplete="off">
+                <input type="hidden" name="booking_id" value="<%= booking.id %>" />
+                <div>
+                    <label for="clientName">Client name *</label>
+                    <input id="clientName" name="clientName" type="text" required placeholder="e.g. John Doe" \
+                        value="<%= booking.client_name %>" />
+                </div>
+
+                <div>
+                    <label for="roomsAllotted">Number of rooms allotted *</label>
+                    <input id="roomsAllotted" name="roomsAllotted" type="number" min="1" required
+                        value="<%= booking.rooms_allotted || 1 %>" readonly />
+                </div>
+
+                <div>
+                    <label for="paxes">Number of Paxes *</label>
+                    <input id="paxes" name="paxes" type="number" min="1" required value="1" />
+                </div>
+
+                <div>
+                    <label for="roomNo">Select Room(s) *</label>
+                    <select id="roomNo" name="roomNo" multiple required size="5">
+  <% rooms.forEach(room => { %>
+    <option value="<%= room.room_id %>" 
+      <%= bookedRoomIds.includes(room.room_id) ? 'selected' : '' %>
+    >
+      <%= bookedRoomIds.includes(room.room_id) ? '✓ ' : '' %>Room No: <%= room.room_number %>
+    </option>
+  <% }) %>
+</select>
+
+                    <p>
+                        <small>Hold Ctrl (Cmd on Mac) to select multiple rooms.</small>
+                    </p>
+                </div>
+
+                <div>
+                    <label for="mealPlan">Meal Plan</label>
+                    <input id="mealPlan" name="mealPlan" type="text" placeholder="e.g. Breakfast only" />
+                </div>
+
+                <div>
+                    <label for="checkinDate">Date of Check-in *</label>
+                    <input id="checkinDate" name="checkinDate" type="date" required />
+                </div>
+
+                <div>
+                    <label for="checkoutDate">Date of Check-out *</label>
+                    <input id="checkoutDate" name="checkoutDate" type="date" required />
+                </div>
+
+                <div class="full">
+                    <label for="clientAddress">Client address</label>
+                    <textarea id="clientAddress" name="clientAddress"
+                        placeholder="Street, City, State, PIN code"></textarea>
+                </div>
+
+                <div>
+                    <label for="idProofType">Identity proof *</label>
+                    <select id="idProofType" name="idProofType" required>
+                        <option value="">-- select --</option>
+                        <option value="aadhaar">Aadhaar Card</option>
+                        <option value="driving">Driving Licence</option>
+                        <option value="passport">Passport</option>
+                        <option value="pan">PAN Card</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="idProofNo">Identity proof no. *</label>
+                    <input id="idProofNo" name="idProofNo" type="text" required placeholder="Enter ID number" />
+                </div>
+
+                <div id="otherIdWrapper" class="full" style="display: none">
+                    <label for="otherIdText">If Other, specify</label>
+                    <input id="otherIdText" name="otherIdText" type="text" placeholder="e.g. Voter ID" />
+                </div>
+
+                <div class="full">
+                    <label for="beds">Number of Extra beds</label>
+                    <input id="beds" name="beds" type="number" min="0" placeholder="e.g. 2" />
+                </div>
+
+                <div>
+                    <label for="bookingFrom">Booking from</label>
+                    <select id="bookingFrom" name="bookingFrom">
+                        <option value="">-- select --</option>
+                        <option value="direct">Direct</option>
+                        <option value="agent">Agent</option>
+                        <option value="travel">Travel Agency</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="bookedBy">Booked by</label>
+                    <input id="bookedBy" name="bookedBy" type="text" placeholder="Name of person or agency" />
+                </div>
+
+                <div class="full">
+                    <label for="notes">Other notes / remarks</label>
+                    <textarea id="notes" name="notes" placeholder="Any additional information"></textarea>
+                </div>
+
+                <div class="actions">
+                    <button type="reset" class="btn-ghost">Reset</button>
+                    <button type="submit" class="btn-primary">Save check-in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+  const roomSelect = document.getElementById('roomNo');
+  const roomsAllottedInput = document.getElementById('roomsAllotted');
+
+  // On page load, count preselected options
+  const preselectedCount = Array.from(roomSelect.options).filter(option => option.selected).length;
+  roomsAllottedInput.value = preselectedCount;
+
+  // Update roomsAllottedInput when user changes selection
+  roomSelect.addEventListener('change', () => {
+    const selectedCount = Array.from(roomSelect.selectedOptions).length;
+    roomsAllottedInput.value = selectedCount;
+  });
+</script>
+
+</body>
+
+</html>
