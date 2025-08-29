@@ -162,13 +162,25 @@ app.post('/logout',(req,res)=>{
 
 // From checkin-checkout branch
 app.get('/checkin', (req, res) => {
-  let q="select * from rooms where is_available = 'available' ";
-  connection.query(q,(error,result)=>{
-    
-    res.render('checkin.ejs',{result});
-
-  })
-  
+  const bookingId = req.query.bookingId;
+  if (bookingId) {
+    const query = `
+      SELECT b.*, r.room_number 
+      FROM bookings b
+      JOIN rooms r ON b.room_id = r.room_id
+      WHERE b.id = ?
+    `;
+    connection.query(query, [bookingId], (err, result) => {
+      if (err) throw err;
+      res.render('checkin.ejs', { result });
+    });
+  } else {
+    // fallback if no booking (direct walk-in)
+    connection.query("SELECT * FROM rooms WHERE is_available='available'", (err, result) => {
+      if (err) throw err;
+      res.render('checkin.ejs', { result });
+    });
+  }
 });
 
 app.get('/checkout-list',isAuthenticated, (req, res) => {
@@ -377,48 +389,48 @@ app.post('/rooms', isAuthenticated, (req, res) => {
 
 // checkin logic
 app.post("/checkin", isAuthenticated, (req, res) => {
-    const {
-        clientName, roomsAllotted, paxes, roomNo, mealPlan, checkinDate,
-        checkoutDate, clientAddress, idProofType, idProofNo, otherIdText,
-        beds, bookingFrom, bookedBy, notes
-    } = req.body;
+  const {
+    clientName, roomsAllotted, paxes, roomNo, mealPlan, checkinDate,
+    checkoutDate, clientAddress, idProofType, idProofNo, otherIdText,
+    beds, bookingFrom, bookedBy, notes
+  } = req.body;
 
-    // 1. Insert guest info into checkins table
-    const insertCheckin = `
-        INSERT INTO checkins
-        (client_name, rooms_allotted, paxes, meal_plan, checkin_date, checkout_date,
-         client_address, id_proof_type, id_proof_no, other_id_text, beds, booking_from, booked_by, notes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+  const insertCheckin = `
+    INSERT INTO checkins
+    (client_name, rooms_allotted, paxes, meal_plan, checkin_date, checkout_date,
+     client_address, id_proof_type, id_proof_no, other_id_text, beds, booking_from, booked_by, notes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
 
-    connection.query(insertCheckin, [
-        clientName, roomsAllotted, paxes, mealPlan, checkinDate, checkoutDate,
-        clientAddress, idProofType, idProofNo, otherIdText, beds, bookingFrom, bookedBy, notes
-    ], (err, result) => {
+  connection.query(insertCheckin, [
+    clientName, roomsAllotted, paxes, mealPlan, checkinDate, checkoutDate,
+    clientAddress, idProofType, idProofNo, otherIdText, beds, bookingFrom, bookedBy, notes
+  ], (err, result) => {
+    if (err) throw err;
+    const checkinId = result.insertId;
+
+    const roomNumbers = Array.isArray(roomNo) ? roomNo : [roomNo];
+
+    roomNumbers.forEach(num => {
+      connection.query(`SELECT room_id FROM rooms WHERE room_number = ?`, [num], (err, rows) => {
         if (err) throw err;
-        const checkinId = result.insertId; // Get the ID of the new check-in
+        if (rows.length > 0) {
+          const roomId = rows[0].room_id;
 
-        // 2. Assign each room to the check-in
-        const roomNumbers = Array.isArray(roomNo) ? roomNo : [roomNo];
+          // Insert into checkin_rooms
+          connection.query(`INSERT INTO checkin_rooms (checkin_id, room_id) VALUES (?, ?)`, [checkinId, roomId]);
 
-        roomNumbers.forEach(num => {
-            // Get the room ID for the room number
-            connection.query(`SELECT room_id FROM rooms WHERE room_number = ?`, [num], (err, rows) => {
-                if (err) throw err;
-                if (rows.length > 0) {
-                    const roomId = rows[0].room_id;
-                    
-                    // Insert into checkin_rooms
-                    connection.query(`INSERT INTO checkin_rooms (checkin_id, room_id) VALUES (?, ?)`, [checkinId, roomId]);
+          // ✅ Mark room as occupied
+          connection.query(`UPDATE rooms SET is_available = 'occupied' WHERE room_id = ?`, [roomId]);
 
-                    // Mark room as occupied
-                    connection.query(`UPDATE rooms SET is_available = 'occupied' WHERE room_id = ?`, [roomId]);
-                }
-            });
-        });
-
-        res.redirect("/dashboard");
+          // ✅ Update related booking status to Checked-in
+          connection.query(`UPDATE bookings SET status='Checked-in' WHERE room_id=? AND status='Confirmed'`, [roomId]);
+        }
+      });
     });
+
+    res.redirect("/dashboard");
+  });
 });
 
 // attendance route from main branch
@@ -621,3 +633,223 @@ app.get("/guest-info/:id", (req, res) => {
     });
   });
 });
+// Show booking page
+app.get("/booking", (req, res) => {
+  const roomsQuery = "SELECT * FROM rooms";
+  const bookingsQuery = `
+    SELECT b.*, r.room_number, r.room_type
+    FROM bookings b
+    JOIN rooms r ON b.room_id = r.room_id
+  `;
+
+  connection.query(roomsQuery, (err, rooms) => {
+    if (err) return res.status(500).send(err);
+
+    connection.query(bookingsQuery, (err2, bookings) => {
+      if (err2) return res.status(500).send(err2);
+
+      // render EJS file booking.ejs
+      res.render("booking.ejs", { rooms, bookings });
+    });
+  });
+});
+
+// Book a room
+app.post("/book-room", (req, res) => {
+  const { room_id, client_name, advance, price, date, status } = req.body;
+
+  const insertBooking = `
+    INSERT INTO bookings (room_id, client_name, advance, price, date, status)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+  let updateRoom = null;
+if (status === "Confirmed") {
+  updateRoom = "UPDATE rooms SET is_available = 'booked' WHERE room_id = ?";
+}
+
+  connection.query(insertBooking, [room_id, client_name, advance, price, date, status], (err) => {
+    if (err) return res.status(500).send(err);
+
+    connection.query(updateRoom, [room_id], (err2) => {
+      if (err2) return res.status(500).send(err2);
+      res.redirect("/booking");
+    });
+  });
+});
+
+// Update booking
+app.post("/update-booking", (req, res) => {
+  const { id, date, advance, price, status } = req.body;
+
+  const updateBooking = `
+    UPDATE bookings
+    SET date=?, advance=?, price=?, status=?
+    WHERE id=?
+  `;
+
+  connection.query(updateBooking, [date, advance, price, status, id], (err) => {
+    if (err) return res.status(500).send(err);
+
+    // If cancelled, free the room
+    if (status === "Cancelled") {
+  const getRoom = "SELECT room_id FROM bookings WHERE id=?";
+  connection.query(getRoom, [id], (err2, result) => {
+    if (!err2 && result.length > 0) {
+      const room_id = result[0].room_id;
+      connection.query("UPDATE rooms SET is_available='available' WHERE room_id=?", [room_id]);
+    }
+  });
+} else if (status === "Confirmed") {
+  const getRoom = "SELECT room_id FROM bookings WHERE id=?";
+  connection.query(getRoom, [id], (err2, result) => {
+    if (!err2 && result.length > 0) {
+      const room_id = result[0].room_id;
+      connection.query("UPDATE rooms SET is_available='booked' WHERE room_id=?", [room_id]);
+    }
+  });
+} else if (status === "Checked-in") {
+  const getRoom = "SELECT room_id FROM bookings WHERE id=?";
+  connection.query(getRoom, [id], (err2, result) => {
+    if (!err2 && result.length > 0) {
+      const room_id = result[0].room_id;
+      connection.query("UPDATE rooms SET is_available='occupied' WHERE room_id=?", [room_id]);
+    }
+  });
+} else if (status === "Checked-out") {
+  const getRoom = "SELECT room_id FROM bookings WHERE id=?";
+  connection.query(getRoom, [id], (err2, result) => {
+    if (!err2 && result.length > 0) {
+      const room_id = result[0].room_id;
+      connection.query("UPDATE rooms SET is_available='available' WHERE room_id=?", [room_id]);
+    }
+  });
+}
+
+
+    res.redirect("/booking");
+  });
+});
+
+app.get("/bookings/:id/checkin", (req, res) => {
+    const bookingId = req.params.id;
+
+    // Get the clicked booking
+    const getBooking = `SELECT * FROM bookings WHERE id = ?`;
+    connection.query(getBooking, [bookingId], (err, results) => {
+        if (err) return res.status(500).send(err);
+        if (results.length === 0) return res.status(404).send("Booking not found");
+
+        const booking = results[0];
+
+        // Get all rooms for the select
+        const getRooms = `SELECT * FROM rooms where is_available="booked" `;
+        connection.query(getRooms, (err2, rooms) => {
+            if (err2) return res.status(500).send(err2);
+
+            // Get all booked room_ids for this client
+            const getBookedRoomIds = `
+                SELECT room_id 
+                FROM bookings 
+                WHERE client_name = ? AND status = 'Confirmed'
+            `;
+            connection.query(getBookedRoomIds, [booking.client_name], (err3, bookedRooms) => {
+                if (err3) return res.status(500).send(err3);
+
+                // Make sure it’s an array of numbers
+                const bookedRoomIds = bookedRooms.map(r => Number(r.room_id));
+                console.log(bookedRoomIds);
+
+                res.render("booked_checkin", { booking, rooms, bookedRoomIds });
+            });
+        });
+    });
+});
+
+
+app.post("/bookings/:id/checkin", (req, res) => {
+    const bookingId = req.params.id;
+
+    // 1. Fetch booking info
+    const getBooking = `
+        SELECT * FROM bookings WHERE id = ? AND status = 'Confirmed'
+    `;
+    connection.query(getBooking, [bookingId], (err, results) => {
+        if (err) return res.status(500).send(err);
+        if (results.length === 0) return res.status(400).send("No confirmed booking found.");
+
+        const booking = results[0];
+
+        // 2. Get form data (guest info)
+        const {
+            clientName,
+            roomsAllotted,
+            paxes,
+            mealPlan,
+            checkinDate,
+            checkoutDate,
+            clientAddress,
+            idProofType,
+            idProofNo,
+            otherIdText,
+            beds,
+            bookingFrom,
+            bookedBy,
+            notes,
+            roomIds // <-- This should be an array of room IDs selected in the form
+        } = req.body;
+
+        // 3. Insert into checkins
+        const insertCheckin = `
+            INSERT INTO checkins
+            (client_name, rooms_allotted, paxes, meal_plan,
+             checkin_date, checkout_date, client_address,
+             id_proof_type, id_proof_no, other_id_text,
+             beds, booking_from, booked_by, notes, booking_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        connection.query(insertCheckin, [
+            clientName,
+            roomsAllotted,
+            paxes,
+            mealPlan,
+            checkinDate,
+            checkoutDate,
+            clientAddress,
+            idProofType,
+            idProofNo,
+            otherIdText,
+            beds,
+            bookingFrom,
+            bookedBy,
+            notes,
+            booking.id
+        ], (err2, result) => {
+            if (err2) return res.status(500).send(err2);
+
+            const checkinId = result.insertId;
+
+            // 4. Insert all rooms into checkin_rooms and mark as occupied
+            roomIds.forEach(roomId => {
+                // Insert into checkin_rooms
+                const insertRoom = `
+                    INSERT INTO checkin_rooms (checkin_id, room_id)
+                    VALUES (?, ?)
+                `;
+                connection.query(insertRoom, [checkinId, roomId]);
+
+                // Update room status
+                connection.query("UPDATE rooms SET is_available='occupied' WHERE room_id=?", [roomId]);
+            });
+
+            // 5. Update booking status
+            const updateBooking = "UPDATE bookings SET status='Checked-in' WHERE id=?";
+            connection.query(updateBooking, [booking.id], (err3) => {
+                if (err3) return res.status(500).send(err3);
+
+                res.send("Check-in successful for all rooms!");
+            });
+        });
+    });
+});
+

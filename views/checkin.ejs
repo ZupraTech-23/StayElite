@@ -24,7 +24,8 @@
               name="clientName"
               type="text"
               required
-              placeholder="e.g. John Doe"
+              placeholder="e.g. John Doe"\
+              value=""
             />
           </div>
 
@@ -57,7 +58,7 @@
             <select id="roomNo" name="roomNo" multiple required size="5">
               <% result.forEach(result => { %>
               <option value="<%= result.room_number %>">
-                <%= result.room_number %>
+               Room No: <%= result.room_number %>
               </option>
               <% }); %>
             </select>
