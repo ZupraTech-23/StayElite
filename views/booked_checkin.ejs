@@ -56,12 +56,14 @@
 
                 <div>
                     <label for="checkinDate">Date of Check-in *</label>
-                    <input id="checkinDate" name="checkinDate" type="date" required />
+        <input type="date" id="checkin_date" name="checkin_date" value="<%= booking.checkin_date ? booking.checkin_date.toLocaleDateString('en-CA') : '' %>" required>
+                    
                 </div>
 
                 <div>
                     <label for="checkoutDate">Date of Check-out *</label>
-                    <input id="checkoutDate" name="checkoutDate" type="date" required />
+        <input type="date" id="checkout_date" name="checkout_date" value="<%= booking.checkout_date ? booking.     checkout_date.toLocaleDateString('en-CA') : '' %>" required>
+                    
                 </div>
 
                 <div class="full">

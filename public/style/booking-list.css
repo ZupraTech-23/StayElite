@@ -1,0 +1,104 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: #f4f6f9;
+  color: #333;
+  padding: 20px;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
+  color: #2c3e50;
+}
+
+/* Table Styling */
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.bookings-table th,
+.bookings-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.bookings-table thead {
+  background: #2c3e50;
+  color: #fff;
+}
+
+.bookings-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+/* Cancelled Row */
+.cancelled-row {
+  background: #ffe6e6 !important;
+  color: #b30000;
+}
+
+/* Status Styles */
+.status {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #e0f7e9;
+  color: #27ae60;
+  border: 1px solid #27ae60;
+}
+
+.status.cancelled {
+  background: #ffe0e0;
+  color: #c0392b;
+  border: 1px solid #c0392b;
+}
+
+/* Buttons */
+.btn {
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.update-btn {
+  background: #3498db;
+  color: white;
+}
+
+.update-btn:hover {
+  background: #2980b9;
+}
+
+/* No Action */
+.no-action {
+  color: #999;
+  font-size: 14px;
+}
