@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Booking</title>
+  <link rel="stylesheet" href="/style/update-booking.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Update Booking</h1>
+
+    <form action="/update-booking/<%= booking.id %>" method="POST" class="form">
+      <div class="form-group">
+        <label for="client_name">Client Name</label>
+        <input type="text" id="client_name" name="client_name" value="<%= booking.client_name %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="advance">Advance</label>
+        <input type="number" id="advance" name="advance" value="<%= booking.advance %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="price">Total Price</label>
+        <input type="number" id="price" name="price" value="<%= booking.price %>" required>
+      </div>
+
+      <div class="form-group">
+  <label for="checkin_date">Check-in Date</label>
+  <input type="date" id="checkin_date" name="checkin_date" 
+    value="<%= booking.checkin_date ? booking.checkin_date.toLocaleDateString('en-CA') : '' %>" required>
+</div>
+
+<div class="form-group">
+  <label for="checkout_date">Check-out Date</label>
+  <input type="date" id="checkout_date" name="checkout_date" 
+    value="<%= booking.checkout_date ? booking.checkout_date.toLocaleDateString('en-CA') : '' %>" required>
+</div>
+
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select id="status" name="status" required>
+          <option value="Confirmed" <%= booking.status === "Confirmed" ? "selected" : "" %>>Confirmed</option>
+          <option value="Pending" <%= booking.status === "Pending" ? "selected" : "" %>>Pending</option>
+          <option value="Cancelled" <%= booking.status === "Cancelled" ? "selected" : "" %>>Cancelled</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn">Update Booking</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings</title>
+    <link rel="stylesheet" href="/style/booking-list.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="heading">Bookings</h1>
+        <table class="bookings-table">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Client Name</th>
+                    <th>Room</th>
+                    <th>Advance</th>
+                    <th>Price</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% bookings.forEach(booking=> { %>
+                    <tr class="<%= booking.status === 'Cancelled' ? 'cancelled-row' : '' %>">
+                        <td>
+                            <%= booking.id %>
+                        </td>
+                        <td>
+                            <%= booking.client_name %>
+                        </td>
+                        <td>
+                            <%= booking.room_id %>
+                        </td>
+                        <td>₹<%= booking.advance %>
+                        </td>
+                        <td>₹<%= booking.price %>
+                        </td>
+                        <td>
+                            <%= booking.checkin_date ? new Date(booking.checkin_date).toDateString() : "N/A" %>
+                        </td>
+                        <td>
+                            <%= booking.checkout_date ? new Date(booking.checkout_date).toDateString() : "N/A" %>
+                        </td>
+
+
+                        <td>
+                            <% if (booking.status==="Cancelled" ) { %>
+                                <span class="status cancelled">Cancelled</span>
+                                <% } else { %>
+                                    <span class="status active">
+                                        <%= booking.status %>
+                                    </span>
+                                    <% } %>
+
+                            
+                                    
+                                
+                                
+                        </td>
+                        
+                        <td>
+                            <% if (booking.status ==="Confirmed" || booking.status==="Pending" ) { %>
+                                <a href="/update-booking/<%= booking.id %>" class="btn update-btn">Update</a>
+                                <a href="/bookings/<%= booking.id %>/checkin">Check-in</a>
+                                <% } else { %>
+                                    <span class="no-action">-</span>
+                                    <% } %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
